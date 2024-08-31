@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  overflow-y: hidden;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -104,5 +108,5 @@ h4 {
 }
 
 p {
-  @apply leading-7 [&:not(:first-child)]:mt-6;
+  @apply leading-7;
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { AudioWaveform, LogIn, LogOut, Menu, Settings, User } from "lucide-react"
+import { AudioWaveform, Bell, LogIn, LogOut, Menu, Settings, User } from "lucide-react"
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { SignOutButton, SignedIn, SignedOut, useUser, SignInButton, SignUpButton } from "@clerk/clerk-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
@@ -14,7 +14,7 @@ const Navbar = () => {
     const router = useRouter()
 
   return (
-    <nav className="p-4 w-full flex justify-between items-center z-10 fixed top-0">
+    <nav className="p-4 w-full flex justify-between items-center z-10 fixed top-0 border-b-[1px] border-neutral-300 dark:border-neutral-800">
         <div className="flex gap-3 items-center">
             <h3 className="text-3xl hover:cursor-pointer font-bold" onClick={() => router.push('/')}>Whisper-wave</h3>
             <AudioWaveform size={24} />
@@ -72,6 +72,7 @@ const Navbar = () => {
                 </SignUpButton>
             </SignedOut>
             <SignedIn>
+                <Button variant="outline"><Bell size={18} /></Button>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant='outline'>
