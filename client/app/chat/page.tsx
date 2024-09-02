@@ -3,10 +3,12 @@
 import React from 'react'
 import contacts from '@/data/contacts.json'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { AudioWaveform } from 'lucide-react'
+import { AudioWaveform, SendHorizonal } from 'lucide-react'
 import ContactCard from '@/components/ContactCard'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import chatData from '@/data/chatData.json'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 const Chat = () => {
   return (
@@ -44,17 +46,22 @@ const Chat = () => {
                     <h3>John Doe</h3>
                 </div>
 
-                <div className='py-12 h-full'>
-                    <ScrollArea className='h-full'>
-                            {chatData.map((chatBlock, index) => (
-                                <div className={`m-2  ${index == chatData.length - 1 ? 'mb-12' : ''}`}>
-                                    {chatBlock.messages.map(message => (
-                                        <div className={`p-2 m-1 bg-neutral-100 w-2/3 ${index % 2 == 0 ? 'ml-auto' : ''}`}>{message}</div>
-                                    ))}
-                                </div>
-                            ))}
-                    </ScrollArea>
-                </div>
+                <ScrollArea className='h-full'>
+                    <div className='py-12 h-full'>
+                        {chatData.map((chatBlock, index) => (
+                            <div className={`mx-2 my-4  ${index == chatData.length - 1 ? 'mb-20' : ''}`} key={index}>
+                                {chatBlock.messages.map((message, messageIndex) => (
+                                    <div key={messageIndex} className={`p-3 m-1 bg-neutral-100 dark:bg-neutral-800 max-w-[66.6667%] w-fit rounded-md ${index % 2 == 0 ? 'ml-auto' : ''}`}>{message}</div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </ScrollArea>
+            </div>
+
+            <div className='flex bottom-0 fixed w-full sm:w-[calc(100%-300px)] md:w-[calc(100%-400px)]'>
+                <Input placeholder='Message...' className='rounded-none' />
+                <Button className='rounded-none'><SendHorizonal size={24} className='mx-1' /></Button>
             </div>
         </section>
     </>
