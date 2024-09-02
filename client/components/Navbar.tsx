@@ -17,6 +17,10 @@ const Navbar = () => {
 
   return (
     <nav className="p-4 w-full flex justify-between items-center z-10 fixed top-0 border-b-[1px] border-neutral-300 dark:border-neutral-800">
+        <ContactsDrawer>
+            <Users className="sm:hidden" />
+        </ContactsDrawer>
+
         <div className="flex gap-3 items-center">
             <h3 className="md:text-3xl hover:cursor-pointer font-bold text-2xl" onClick={() => router.push('/')}>Whisper-wave</h3>
             <AudioWaveform size={24} />
@@ -50,11 +54,6 @@ const Navbar = () => {
                     </SignedOut>
                     <SignedIn>
                         <Button variant='outline'>Search <Search size={18} className="mx-1" /></Button>
-                        <SheetClose asChild>
-                            <ContactsDrawer>
-                                    <Button variant='outline'>Chats <Users size={18} className="mx-1" /></Button>
-                            </ContactsDrawer>
-                        </SheetClose>
                         <SheetClose asChild>
                             <Button variant='outline' onClick={() => router.push('/profile')}>{user?.fullName} <User size={18} className="mx-1" /></Button>
                         </SheetClose>
