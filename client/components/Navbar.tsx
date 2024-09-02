@@ -1,14 +1,14 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { AudioWaveform, Bell, LogIn, LogOut, Menu, Search, Settings, User, Users } from "lucide-react"
+import { AudioWaveform, Bell, LogIn, LogOut, Menu, Settings, User, UserPlus, Users } from "lucide-react"
 import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { SignOutButton, SignedIn, SignedOut, useUser, SignInButton, SignUpButton } from "@clerk/clerk-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { useRouter } from "next/navigation"
 import { ModeToggle } from "./mode-toggle"
 import ContactsDrawer from "./ContactsDrawer"
-import { Input } from "./ui/input"
+import AddContactTrigger from "./AddContactTrigger"
 
 const Navbar = () => {
 
@@ -53,7 +53,9 @@ const Navbar = () => {
                         </SignUpButton>
                     </SignedOut>
                     <SignedIn>
-                        <Button variant='outline'>Search <Search size={18} className="mx-1" /></Button>
+                        <AddContactTrigger>
+                            <Button variant='outline'><UserPlus size={18} className="mx-2" /> Add Contact</Button>
+                        </AddContactTrigger>
                         <SheetClose asChild>
                             <Button variant='outline' onClick={() => router.push('/profile')}>{user?.fullName} <User size={18} className="mx-1" /></Button>
                         </SheetClose>
@@ -79,11 +81,11 @@ const Navbar = () => {
                 </SignUpButton>
             </SignedOut>
             <SignedIn>
-                <div>
-                    <Input placeholder="Search..." className="sm:w-20 md:w-auto" />
-                </div>
                 <ModeToggle />
                 <Button variant="outline"><Bell size={18} /></Button>
+                <AddContactTrigger>
+                    <Button variant='outline'><UserPlus size={18} className="mx-2" /> Add Contact</Button>
+                </AddContactTrigger>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant='outline'>
