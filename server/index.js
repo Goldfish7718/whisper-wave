@@ -1,3 +1,4 @@
+// PACKAGE IMPORTS
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -7,9 +8,17 @@ import { config } from 'dotenv';
 
 config()
 
+// ROUTE IMPORTS 
+import userRoutes from './routes/userRoutes.js'
+
+// CONSTANTS
 const app = express();
 const server = createServer(app);
 const PORT = process.env.PORT || 5000
+
+// MIDDLEWARE
+app.use(express.json())
+app.use('/users', userRoutes)
 
 const io = new Server(server, {
     cors: {
