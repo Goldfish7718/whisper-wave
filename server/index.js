@@ -5,6 +5,7 @@ import { Server } from 'socket.io';
 import { processPrivateMessage } from './controllers/chatControllers.js';
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
+import cors from 'cors';
 
 config()
 
@@ -13,12 +14,18 @@ import userRoutes from './routes/userRoutes.js'
 
 // CONSTANTS
 const app = express();
-const server = createServer(app);
 const PORT = process.env.PORT || 5000
 
 // MIDDLEWARE
 app.use(express.json())
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}))
+
 app.use('/users', userRoutes)
+
+const server = createServer(app);
 
 const io = new Server(server, {
     cors: {
@@ -35,6 +42,7 @@ const connectDB = async (DB_URI) => {
 
 export const users = {}; 
 
+// SOCKET IO CONFIG ADN EVENTS
 io.on('connection', (socket) => {
     socket.on('register', ({ userId }) => {
         users[userId] = socket.id;

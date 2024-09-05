@@ -4,8 +4,8 @@ import { Separator } from "./ui/separator"
 interface ContactCardProps {
     image: string;
     name: string;
-    lastMessage: string;
-    time: string;
+    lastMessage?: string;
+    time?: string;
 }
 
 const ContactCard = (contact: ContactCardProps) => {
@@ -28,9 +28,9 @@ const ContactCard = (contact: ContactCardProps) => {
             <div className='flex flex-col w-full'>
                 <div className='flex justify-between items-center'>
                     <h4 className='text-neutral-800 dark:text-neutral-50'>{contact.name}</h4>
-                    <span className='text-sm text-neutral-400'>{contact.time}</span>
+                    {contact.time && <span className='text-sm text-neutral-400'>{contact.time}</span>}
                 </div>
-                <p className='text-neutral-600 dark:text-neutral-300'>{truncateString(contact.lastMessage)}</p>
+                {contact.lastMessage && <p className='text-neutral-600 dark:text-neutral-300'>{truncateString(contact.lastMessage)}</p>}
             </div>
         </div>
         <Separator />

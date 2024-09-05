@@ -3,7 +3,7 @@ import User from '../models/userModel.js';
 
 export const getUser = async (req, res) => {
     try {
-        const { userId } = req.params
+        const { userId } = req.params        
         const user = await User.findOne({ userId })
 
         if (!user)
@@ -25,10 +25,45 @@ export const getUser = async (req, res) => {
 export const createUser = async (req, res) => {
     try {
         const { userId } = req.body
+        const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
+        console.log(userId);
 
-        const user = await User.create({
-            userId
-        })
+        try {
+            await clerkClient.users.getUser(userId)
+        } catch (error) {
+            if (error.status == 404) {
+                return res
+                    .status(404)
+                    .json({ message: `No user found with ID: ${contactId}` })
+            }
+
+            throw error
+        }
+
+        let user = await User.findOne({ userId })
+        let connections;
+
+        if (!user) {
+            user = await User.create({
+                userId
+            })
+        } 
+        
+        if (user.connections.length > 0) {
+            connections = (await clerkClient.users.getUserList({ userId: user.connections })).data
+            connections = connections.map(connection => {
+                return {
+                    id: connection.id,
+                    image: connection.imageUrl,
+                    name: `${connection.firstName} ${connection.lastName}`
+                }
+            })
+        }
+
+        user = {
+            ...user.toObject(),
+            connections
+        }
 
         res
             .status(200)
@@ -44,7 +79,6 @@ export const createUser = async (req, res) => {
 export const sendContactRequest = async (req, res) => {
     try {
         const { contactId, userId } = req.body;
-        const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
 
         try {
             await clerkClient.users.getUser(contactId)

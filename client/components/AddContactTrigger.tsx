@@ -46,7 +46,7 @@ const AddContactTrigger = ({ children }: AddContactTriggerProps) => {
                   <DialogTitle className='text-lg'>Add New Contact</DialogTitle>
                 </DialogHeader>
                 <div className="flex gap-2">
-                  <Input placeholder='Enter Email' />
+                  <Input placeholder='Enter Contact ID' />
                   <Button disabled={loading} onClick={handleSubmit}>
                     {!loading && <>Add <Plus className='mx-1' size={18} /></>}
                     {loading && <Loader2 className='animate-spin duration-300' />}
@@ -69,7 +69,7 @@ const AddContactTrigger = ({ children }: AddContactTriggerProps) => {
                 <DrawerTitle className='text-lg'>Add New Contact</DrawerTitle>
               </DrawerHeader>
               <div className="flex gap-2 p-4">
-                <Input placeholder='Enter Email' />
+                <Input placeholder='Enter Contact ID' />
                 <Button disabled={loading} onClick={handleSubmit}>
                   {!loading && <>Add <Plus className='mx-1' size={18} /></>}
                   {loading && <Loader2 className='animate-spin duration-300' />}

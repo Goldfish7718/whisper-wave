@@ -12,11 +12,11 @@ const ContactsDrawer = ({ children }: { children: React.ReactNode }) => {
         <DrawerContent className="h-[500px]">
             <ScrollArea className='h-full mt-2'>
                     {contacts.map(contact => (
-                        <DrawerClose asChild>
-                            <div key={contact.id}>
+                        <div key={contact.id}>
+                            <DrawerClose asChild>
                                 <ContactCard {...contact} />
-                            </div>
-                        </DrawerClose>
+                            </DrawerClose>
+                        </div>
                     ))}
             </ScrollArea>
         </DrawerContent>
