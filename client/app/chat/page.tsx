@@ -9,27 +9,30 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { apiInstance } from "../globals";
 import { useUser } from "@clerk/nextjs";
-import { ChatType, SelectedContactType, UserType } from "@/types/types";
+import { ChatType } from "@/types/types";
 import Loading from "@/components/Loading";
 import { connect } from "socket.io-client";
-import contacts from "@/data/contacts.json";
 import { chatData1, chatData2 } from "@/data/chat";
 import { useExtendedUser } from "@/context/UserContext";
+import { useChat } from "@/context/ChatContext";
 
 // export const socket = connect(`${process.env.NEXT_PUBLIC_API_URL}`);
 
 const Chat = () => {
   const { user: clerkUser } = useUser();
   const { loading, user } = useExtendedUser();
+  const { selectedContact, handleContactSelect } = useChat();
+
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const [chats, setChats] = useState<ChatType | null>(chatData1);
   const [message, setMessage] = useState("");
 
-  const flipChatState = () => {
-    if (chats == chatData1) setChats(chatData2);
-    else setChats(chatData1);
-  };
+  function getInitials(fullName: string) {
+    const words = fullName.split(" ");
+    const initials = words.map((word) => word[0].toUpperCase()).join("");
+    return initials;
+  }
 
   const pushMessage = () => {
     setChats((prev) => {
@@ -60,7 +63,7 @@ const Chat = () => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ block: "start", behavior: "smooth" });
     }
-  }, [chats]);
+  }, [chats, selectedContact]);
 
   //   useEffect(() => {
   //     socket.on("privateMessage", ({ sender, message }) => {
@@ -110,7 +113,9 @@ const Chat = () => {
         <ScrollArea className="h-full">
           {!loading &&
             user?.connections.map((contact) => (
-              <div key={contact.id} onClick={flipChatState}>
+              <div
+                key={contact.id}
+                onClick={() => handleContactSelect(contact.id)}>
                 <ContactCard {...contact} />
               </div>
             ))}
@@ -122,74 +127,78 @@ const Chat = () => {
           )}
         </ScrollArea>
       </aside>
-      {/*  */}
+
       {/* CHAT INTERFACE */}
       <section className="sm:ml-[300px] md:ml-[400px]">
         {/* NO CONVERSATION SELECTED */}
-        {/* {!selectedContact &&
-                <div className='flex justify-center items-center h-screen bg-neutral-100 dark:bg-neutral-900 z-0'>
-                    <div className='fixed flex flex-col items-center gap-1'>
-                        <AudioWaveform size={28} className='text-neutral-500' />
-                        <h3 className='text-neutral-500 font-medium text-lg'>Select a conversation to get started</h3>
-                    </div>
-                </div>
-            } */}
+        {!selectedContact && (
+          <div className="flex justify-center items-center h-screen bg-neutral-100 dark:bg-neutral-900 z-0">
+            <div className="fixed flex flex-col items-center gap-1">
+              <AudioWaveform size={28} className="text-neutral-500" />
+              <h3 className="text-neutral-500 font-medium text-lg">
+                Select a conversation to get started
+              </h3>
+            </div>
+          </div>
+        )}
 
         {/* CONVERSATION SELECTED */}
-        {/* {selectedContact && */}
-        <div>
-          <div className="h-screen">
-            <div className="fixed flex items-center p-2 gap-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 w-full z-10 backdrop-blur-sm">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={""} alt="CN" />
-                <AvatarFallback>TN</AvatarFallback>
-              </Avatar>
+        {selectedContact && (
+          <div>
+            <div className="h-screen">
+              <div className="fixed flex items-center p-2 gap-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 w-full z-10 backdrop-blur-sm">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={selectedContact.image} alt="CN" />
+                  <AvatarFallback>
+                    {getInitials(selectedContact.fullname)}
+                  </AvatarFallback>
+                </Avatar>
 
-              <h3 className="text-lg">Tejas Nanoti</h3>
-            </div>
-
-            {/* CONVERSATION */}
-            <ScrollArea className="h-full">
-              <div className="py-12 h-full">
-                {chats?.chats.map((chatBlock, index) => (
-                  <div
-                    className={`mx-2 mt-4 ${index == 0 ? "mt-20" : ""}`}
-                    key={index}>
-                    {chatBlock.messages.map((message, messageIndex) => (
-                      <div
-                        key={messageIndex}
-                        className={`p-3 m-1 bg-neutral-100 dark:bg-neutral-800 max-w-[66.6667%] w-fit rounded-md ${
-                          chatBlock.sender === clerkUser?.id ? "ml-auto" : ""
-                        }`}>
-                        {message}
-                      </div>
-                    ))}
-                  </div>
-                ))}
-
-                <div ref={bottomRef}></div>
+                <h3 className="text-lg">Tejas Nanoti</h3>
               </div>
-            </ScrollArea>
-          </div>
 
-          <div className="flex bottom-0 fixed w-full sm:w-[calc(100%-300px)] md:w-[calc(100%-400px)]">
-            <Input
-              placeholder="Message..."
-              className="rounded-none"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <div className="bg-white dark:bg-black">
-              <Button
-                className="rounded-none "
-                disabled={!Boolean(message)}
-                onClick={pushMessage}>
-                <SendHorizonal size={24} className="mx-1" />
-              </Button>
+              {/* CONVERSATION */}
+              <ScrollArea className="h-full">
+                <div className="py-12 h-full">
+                  {chats?.chats.map((chatBlock, index) => (
+                    <div
+                      className={`mx-2 mt-4 ${index == 0 ? "mt-20" : ""}`}
+                      key={index}>
+                      {chatBlock.messages.map((message, messageIndex) => (
+                        <div
+                          key={messageIndex}
+                          className={`p-3 m-1 bg-neutral-100 dark:bg-neutral-800 max-w-[66.6667%] w-fit rounded-md ${
+                            chatBlock.sender === clerkUser?.id ? "ml-auto" : ""
+                          }`}>
+                          {message}
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+
+                  <div ref={bottomRef}></div>
+                </div>
+              </ScrollArea>
+            </div>
+
+            <div className="flex bottom-0 fixed w-full sm:w-[calc(100%-300px)] md:w-[calc(100%-400px)]">
+              <Input
+                placeholder="Message..."
+                className="rounded-none"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <div className="bg-white dark:bg-black">
+                <Button
+                  className="rounded-none "
+                  disabled={!Boolean(message)}
+                  onClick={pushMessage}>
+                  <SendHorizonal size={24} className="mx-1" />
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-        {/* } */}
+        )}
       </section>
     </>
   );
