@@ -9,23 +9,20 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { apiInstance } from "../globals";
 import { useUser } from "@clerk/nextjs";
-import { ChatType } from "@/types/types";
 import Loading from "@/components/Loading";
 import { connect } from "socket.io-client";
-import { chatData1, chatData2 } from "@/data/chat";
 import { useExtendedUser } from "@/context/UserContext";
 import { useChat } from "@/context/ChatContext";
 
-// export const socket = connect(`${process.env.NEXT_PUBLIC_API_URL}`);
+export const socket = connect(`${process.env.NEXT_PUBLIC_API_URL}`);
 
 const Chat = () => {
   const { user: clerkUser } = useUser();
   const { loading, user } = useExtendedUser();
-  const { selectedContact, handleContactSelect } = useChat();
+  const { selectedContact, handleContactSelect, chats, getChats } = useChat();
 
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const [chats, setChats] = useState<ChatType | null>(chatData1);
   const [message, setMessage] = useState("");
 
   function getInitials(fullName: string) {
@@ -34,36 +31,17 @@ const Chat = () => {
     return initials;
   }
 
-  const pushMessage = () => {
-    setChats((prev) => {
-      if (!prev) return prev;
-
-      const lastChatBlock = prev?.chats[prev.chats.length - 1];
-
-      const updatedChatBlock = {
-        ...lastChatBlock,
-        messages: [...lastChatBlock.messages, message],
-      };
-
-      const updatedChats = [
-        ...prev.chats.slice(0, prev.chats.length - 1),
-        updatedChatBlock,
-      ];
-
-      return {
-        ...prev,
-        chats: updatedChats,
-      };
-    });
-
-    setMessage("");
-  };
-
   useEffect(() => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ block: "start", behavior: "smooth" });
     }
   }, [chats, selectedContact]);
+
+  useEffect(() => {
+    if (selectedContact) {
+      getChats();
+    }
+  }, [selectedContact]);
 
   //   useEffect(() => {
   //     socket.on("privateMessage", ({ sender, message }) => {
@@ -189,10 +167,7 @@ const Chat = () => {
                 onChange={(e) => setMessage(e.target.value)}
               />
               <div className="bg-white dark:bg-black">
-                <Button
-                  className="rounded-none "
-                  disabled={!Boolean(message)}
-                  onClick={pushMessage}>
+                <Button className="rounded-none " disabled={!Boolean(message)}>
                   <SendHorizonal size={24} className="mx-1" />
                 </Button>
               </div>
