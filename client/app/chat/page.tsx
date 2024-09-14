@@ -14,11 +14,13 @@ import Loading from "@/components/Loading";
 import { connect } from "socket.io-client";
 import contacts from "@/data/contacts.json";
 import { chatData1, chatData2 } from "@/data/chat";
+import { useExtendedUser } from "@/context/UserContext";
 
 // export const socket = connect(`${process.env.NEXT_PUBLIC_API_URL}`);
 
 const Chat = () => {
   const { user: clerkUser } = useUser();
+  const { loading, user } = useExtendedUser();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const [chats, setChats] = useState<ChatType | null>(chatData1);
@@ -106,17 +108,18 @@ const Chat = () => {
       {/* CONTACTS */}
       <aside className="fixed hidden sm:block sm:w-[300px] md:w-[400px] border-r-[1px] border-neutral-300 dark:border-neutral-800 h-screen">
         <ScrollArea className="h-full">
-          {contacts.map((contact) => (
-            <div key={contact.id} onClick={flipChatState}>
-              <ContactCard {...contact} />
-            </div>
-          ))}
+          {!loading &&
+            user?.connections.map((contact) => (
+              <div key={contact.id} onClick={flipChatState}>
+                <ContactCard {...contact} />
+              </div>
+            ))}
 
-          {/* {loading &&
-                    <div className='w-full h-screen flex justify-center items-center'>
-                        <Loading size={48} />
-                    </div>
-                } */}
+          {loading && (
+            <div className="w-full h-screen flex justify-center items-center">
+              <Loading size={48} />
+            </div>
+          )}
         </ScrollArea>
       </aside>
       {/*  */}
@@ -176,12 +179,14 @@ const Chat = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <Button
-              className="rounded-none"
-              disabled={!Boolean(message)}
-              onClick={pushMessage}>
-              <SendHorizonal size={24} className="mx-1" />
-            </Button>
+            <div className="bg-white dark:bg-black">
+              <Button
+                className="rounded-none "
+                disabled={!Boolean(message)}
+                onClick={pushMessage}>
+                <SendHorizonal size={24} className="mx-1" />
+              </Button>
+            </div>
           </div>
         </div>
         {/* } */}

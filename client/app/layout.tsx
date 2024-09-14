@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/toaster";
+import UserProvider from "@/context/UserContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,22 +21,21 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-            >
-            <Navbar />
-            <main className="mt-16 sm:mt-[72px]">
-              {children}
-            </main>
-            <Toaster />
-          </ThemeProvider>
-        </body>
-      </html>
+      <UserProvider>
+        <html lang="en">
+          <body className={inter.className}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange>
+              <Navbar />
+              <main className="mt-16 sm:mt-[72px]">{children}</main>
+              <Toaster />
+            </ThemeProvider>
+          </body>
+        </html>
+      </UserProvider>
     </ClerkProvider>
   );
 }
