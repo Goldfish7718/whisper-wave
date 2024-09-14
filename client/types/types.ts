@@ -19,10 +19,8 @@ export interface SelectedContactType {
 export interface ChatType {
     participant1: string;
     participant2: string;
-    chats: [
-        {
+    chats: {
             sender: string;
             messages: string[];
-        }
-    ]
+    }[]
 }

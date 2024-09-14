@@ -16,7 +16,7 @@ const Navbar = () => {
     const router = useRouter()
 
   return (
-    <nav className="p-4 w-full flex justify-between items-center z-10 fixed top-0 border-b-[1px] border-neutral-300 dark:border-neutral-800">
+    <nav className="p-4 w-full flex justify-between items-center z-10 fixed top-0 border-b-[1px] border-neutral-300 dark:border-neutral-800 bg-white dark:bg-[#0c0a09]">
         <ContactsDrawer>
             <Users className="sm:hidden" />
         </ContactsDrawer>

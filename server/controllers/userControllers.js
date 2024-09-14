@@ -26,7 +26,7 @@ export const createUser = async (req, res) => {
     try {
         const { userId } = req.body
         const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
-        console.log(userId);
+        // console.log(userId);
 
         try {
             await clerkClient.users.getUser(userId)

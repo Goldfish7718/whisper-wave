@@ -11,6 +11,7 @@ config()
 
 // ROUTE IMPORTS 
 import userRoutes from './routes/userRoutes.js'
+import chatRoutes from './routes/chatRoutes.js'
 
 // CONSTANTS
 const app = express();
@@ -23,7 +24,9 @@ app.use(cors({
     credentials: true
 }))
 
+// ROUTES
 app.use('/users', userRoutes)
+app.use('/chats', chatRoutes)
 
 const server = createServer(app);
 
