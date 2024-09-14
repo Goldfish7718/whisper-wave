@@ -3,19 +3,8 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { useExtendedUser } from "./UserContext";
 import { SelectedContactType } from "@/types/types";
-
-interface ChatProviderProps {
-  children: React.ReactNode;
-}
-
-interface ChatContextType {
-  // DATA
-  selectedContact: SelectedContactType | null;
-
-  // FUNCTIONS
-  handleContactSelect: (contactId: string) => void;
-  // OTHER
-}
+import ChatProviderProps from "@/types/types";
+import { ChatContextType } from "@/types/contextTypes";
 
 const ChatContext = createContext<ChatContextType | null>(null);
 export const useChat = (): ChatContextType => {

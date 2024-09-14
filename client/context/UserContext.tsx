@@ -4,21 +4,8 @@ import { apiInstance } from "@/app/globals";
 import { UserType } from "@/types/types";
 import { useUser } from "@clerk/nextjs";
 import { useContext, createContext, useState, useEffect } from "react";
-
-interface UserProviderProps {
-  children: React.ReactNode;
-}
-
-interface UserContextType {
-  // DATA
-  user: UserType | null;
-
-  // FUNCTIONS
-  getUser: () => void;
-
-  // OTHER
-  loading: boolean;
-}
+import UserProviderProps from "@/types/types";
+import { UserContextType } from "@/types/contextTypes";
 
 const UserContext = createContext<UserContextType | null>(null);
 export const useExtendedUser = (): UserContextType => {
