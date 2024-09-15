@@ -16,6 +16,13 @@ export interface SelectedContactType {
     image: string | undefined;
 }
 
+export interface ContactCardProps {
+    image: string;
+    name: string;
+    lastMessage?: string;
+    time?: string;
+}
+
 export interface ChatType {
     participant1: string;
     participant2: string;
@@ -23,4 +30,8 @@ export interface ChatType {
             sender: string;
             messages: string[];
     }[]
+}
+
+export default interface TriggerProps {
+    children: React.ReactNode
 }
