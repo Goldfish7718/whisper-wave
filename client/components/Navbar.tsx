@@ -38,13 +38,14 @@ import { useRouter } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
 import ContactsDrawer from "./ContactsDrawer";
 import AddContactTrigger from "./AddContactTrigger";
+import NotificationsTrigger from "./NotificationsTrigger";
 
 const Navbar = () => {
   const { user } = useUser();
   const router = useRouter();
 
   return (
-    <nav className="p-4 w-full flex justify-between items-center z-10 fixed top-0 border-b-[1px] border-neutral-300 dark:border-neutral-800 bg-white dark:bg-[#0c0a09]">
+    <nav className="p-4 w-full flex justify-between items-center z-20 fixed top-0 border-b-[1px] border-neutral-300 dark:border-neutral-800 bg-white dark:bg-[#0c0a09]">
       <ContactsDrawer>
         <Users className="sm:hidden" />
       </ContactsDrawer>
@@ -73,7 +74,7 @@ const Navbar = () => {
               <SignInButton>
                 <SheetClose asChild>
                   <Button variant="outline">
-                    Sign In <LogIn size={18} className="mx-1" />
+                    Sign In <LogIn size={18} className="mx-2" />
                   </Button>
                 </SheetClose>
               </SignInButton>
@@ -81,7 +82,7 @@ const Navbar = () => {
               <SignUpButton>
                 <SheetClose asChild>
                   <Button variant="outline">
-                    Sign up <User size={18} className="mx-1" />
+                    Sign up <User size={18} className="mx-2" />
                   </Button>
                 </SheetClose>
               </SignUpButton>
@@ -93,18 +94,26 @@ const Navbar = () => {
                   <UserPlus size={18} className="mx-2" />
                 </Button>
               </AddContactTrigger>
+              <NotificationsTrigger>
+                <Button variant="outline">
+                  Notifications <Bell size={18} className="mx-2" />
+                </Button>
+              </NotificationsTrigger>
               <SheetClose asChild>
                 <Button
                   variant="outline"
                   onClick={() => router.push("/profile")}>
-                  {user?.fullName} <User size={18} className="mx-1" />
+                  {user?.fullName} <User size={18} className="mx-2" />
                 </Button>
               </SheetClose>
+              <Button variant="outline">
+                Settings <Settings size={18} className="mx-2" />
+              </Button>
               <SignOutButton>
                 <SheetClose asChild>
                   <Button variant="outline">
                     Log Out
-                    <LogOut size={18} className="mx-1" />
+                    <LogOut size={18} className="mx-2" />
                   </Button>
                 </SheetClose>
               </SignOutButton>
@@ -130,9 +139,11 @@ const Navbar = () => {
         </SignedOut>
         <SignedIn>
           <ModeToggle />
-          <Button variant="outline">
-            <Bell size={18} />
-          </Button>
+          <NotificationsTrigger>
+            <Button variant="outline">
+              <Bell size={18} />
+            </Button>
+          </NotificationsTrigger>
           <AddContactTrigger>
             <Button variant="outline">
               Add Contact <UserPlus size={18} className="mx-2" />
