@@ -11,6 +11,7 @@ import { useUser } from "@clerk/nextjs";
 import Loading from "@/components/Loading";
 import { useExtendedUser } from "@/context/UserContext";
 import { useChat } from "@/context/ChatContext";
+import { getInitials } from "@/utils";
 
 const Chat = () => {
   const { user: clerkUser } = useUser();
@@ -22,12 +23,6 @@ const Chat = () => {
     useChat();
 
   const [message, setMessage] = useState("");
-
-  function getInitials(fullName: string) {
-    const words = fullName.split(" ");
-    const initials = words.map((word) => word[0].toUpperCase()).join("");
-    return initials;
-  }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && message) {

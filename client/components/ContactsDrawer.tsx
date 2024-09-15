@@ -9,14 +9,6 @@ const ContactsDrawer = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useExtendedUser();
   const { handleContactSelect } = useChat();
 
-  const truncateString = (message: string) => {
-    if (message.length > 50) {
-      return `${message.substring(0, 20)}...`;
-    }
-
-    return message;
-  };
-
   return (
     <Drawer>
       {!loading && user && <DrawerTrigger asChild>{children}</DrawerTrigger>}
