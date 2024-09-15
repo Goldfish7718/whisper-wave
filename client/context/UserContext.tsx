@@ -1,6 +1,6 @@
 "use client";
 
-import { apiInstance } from "@/app/globals";
+import { apiInstance, socket } from "@/app/globals";
 import { UserType } from "@/types/types";
 import { useUser } from "@clerk/nextjs";
 import { useContext, createContext, useState, useEffect } from "react";
@@ -34,7 +34,10 @@ function UserProvider({ children }: UserProviderProps) {
   };
 
   useEffect(() => {
-    if (clerkUser) getUser();
+    if (clerkUser) {
+      getUser();
+      socket.emit("register", { userId: clerkUser.id });
+    }
   }, [clerkUser]);
 
   const value: UserContextType = {

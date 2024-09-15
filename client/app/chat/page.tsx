@@ -7,21 +7,19 @@ import ContactCard from "@/components/ContactCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { apiInstance } from "../globals";
 import { useUser } from "@clerk/nextjs";
 import Loading from "@/components/Loading";
-import { connect } from "socket.io-client";
 import { useExtendedUser } from "@/context/UserContext";
 import { useChat } from "@/context/ChatContext";
-
-export const socket = connect(`${process.env.NEXT_PUBLIC_API_URL}`);
 
 const Chat = () => {
   const { user: clerkUser } = useUser();
   const { loading, user } = useExtendedUser();
-  const { selectedContact, handleContactSelect, chats, getChats } = useChat();
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const sendButtonRef = useRef<HTMLButtonElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const { selectedContact, handleContactSelect, chats, getChats, sendMessage } =
+    useChat();
 
   const [message, setMessage] = useState("");
 
@@ -30,6 +28,13 @@ const Chat = () => {
     const initials = words.map((word) => word[0].toUpperCase()).join("");
     return initials;
   }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && message) {
+      sendButtonRef.current?.click();
+      inputRef.current?.focus();
+    }
+  };
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -42,47 +47,6 @@ const Chat = () => {
       getChats();
     }
   }, [selectedContact]);
-
-  //   useEffect(() => {
-  //     socket.on("privateMessage", ({ sender, message }) => {
-  //       console.log(sender, message);
-  //       setChats((prevChats) => {
-  //         if (!prevChats) return null;
-  //         const lastChatBlock = prevChats?.chats[prevChats.chats.length - 1];
-
-  //         if (lastChatBlock?.sender === sender) {
-  //           // Update the last chat block's messages array
-  //           const updatedChats = [...prevChats.chats];
-  //           updatedChats[updatedChats.length - 1] = {
-  //             ...lastChatBlock,
-  //             messages: [...lastChatBlock.messages, message],
-  //           };
-
-  //           // Return the updated chat list
-  //           return {
-  //             ...prevChats,
-  //             chats: updatedChats,
-  //           };
-  //         } else {
-  //           // If the sender is different, create a new chat block
-  //           const newChatBlock = {
-  //             sender,
-  //             messages: [message],
-  //           };
-
-  //           // Return the updated chat list with the new block
-  //           return {
-  //             ...prevChats,
-  //             chats: [...prevChats.chats, newChatBlock],
-  //           };
-  //         }
-  //       });
-  //     });
-
-  //     return () => {
-  //       socket.off("privateMessage");
-  //     };
-  //   }, []);
 
   return (
     <>
@@ -140,7 +104,7 @@ const Chat = () => {
                 <div className="py-12 h-full">
                   {chats?.chats.map((chatBlock, index) => (
                     <div
-                      className={`mx-2 mt-4 ${index == 0 ? "mt-20" : ""}`}
+                      className={`mx-2 ${index == 0 ? "mt-20" : "mt-4"}`}
                       key={index}>
                       {chatBlock.messages.map((message, messageIndex) => (
                         <div
@@ -164,10 +128,19 @@ const Chat = () => {
                 placeholder="Message..."
                 className="rounded-none"
                 value={message}
+                ref={inputRef}
+                onKeyDown={handleKeyPress}
                 onChange={(e) => setMessage(e.target.value)}
               />
               <div className="bg-white dark:bg-black">
-                <Button className="rounded-none " disabled={!Boolean(message)}>
+                <Button
+                  className="rounded-none "
+                  disabled={!Boolean(message)}
+                  ref={sendButtonRef}
+                  onClick={() => {
+                    sendMessage(message);
+                    setMessage("");
+                  }}>
                   <SendHorizonal size={24} className="mx-1" />
                 </Button>
               </div>

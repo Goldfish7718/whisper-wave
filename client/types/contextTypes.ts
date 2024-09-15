@@ -8,6 +8,7 @@ export interface ChatContextType {
   // FUNCTIONS
   handleContactSelect: (contactId: string) => void;
   getChats: () => void;
+  sendMessage: (message: string) => void;
 
   // OTHER
 }
