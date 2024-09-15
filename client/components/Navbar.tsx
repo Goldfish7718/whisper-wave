@@ -38,6 +38,7 @@ import { useRouter } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
 import ContactsDrawer from "./ContactsDrawer";
 import AddContactTrigger from "./AddContactTrigger";
+import NotificationsTrigger from "./NotificationsTrigger";
 
 const Navbar = () => {
   const { user } = useUser();
@@ -93,9 +94,11 @@ const Navbar = () => {
                   <UserPlus size={18} className="mx-2" />
                 </Button>
               </AddContactTrigger>
-              <Button variant="outline">
-                Notifications <Bell size={18} className="mx-2" />
-              </Button>
+              <NotificationsTrigger>
+                <Button variant="outline">
+                  Notifications <Bell size={18} className="mx-2" />
+                </Button>
+              </NotificationsTrigger>
               <SheetClose asChild>
                 <Button
                   variant="outline"
@@ -136,9 +139,11 @@ const Navbar = () => {
         </SignedOut>
         <SignedIn>
           <ModeToggle />
-          <Button variant="outline">
-            <Bell size={18} />
-          </Button>
+          <NotificationsTrigger>
+            <Button variant="outline">
+              <Bell size={18} />
+            </Button>
+          </NotificationsTrigger>
           <AddContactTrigger>
             <Button variant="outline">
               Add Contact <UserPlus size={18} className="mx-2" />
