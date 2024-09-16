@@ -57,7 +57,9 @@ const AddContactTrigger = ({ children }: TriggerProps) => {
                 value={contactIdToRequest}
                 onChange={(e) => setcontactIdToRequest(e.target.value)}
               />
-              <Button disabled={loading} onClick={handleSubmit}>
+              <Button
+                onClick={handleSubmit}
+                disabled={loading || !Boolean(contactIdToRequest)}>
                 {!loading && (
                   <>
                     Add <Plus className="mx-1" size={18} />
@@ -85,7 +87,9 @@ const AddContactTrigger = ({ children }: TriggerProps) => {
                 value={contactIdToRequest}
                 onChange={(e) => setcontactIdToRequest(e.target.value)}
               />
-              <Button disabled={loading} onClick={handleSubmit}>
+              <Button
+                onClick={handleSubmit}
+                disabled={loading || !Boolean(contactIdToRequest)}>
                 {!loading && (
                   <>
                     Add <Plus className="mx-1" size={18} />
