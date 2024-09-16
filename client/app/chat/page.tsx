@@ -11,6 +11,7 @@ import { useUser } from "@clerk/nextjs";
 import Loading from "@/components/Loading";
 import { useExtendedUser } from "@/context/UserContext";
 import { useChat } from "@/context/ChatContext";
+import { getInitials } from "@/utils";
 
 const Chat = () => {
   const { user: clerkUser } = useUser();
@@ -22,12 +23,6 @@ const Chat = () => {
     useChat();
 
   const [message, setMessage] = useState("");
-
-  function getInitials(fullName: string) {
-    const words = fullName.split(" ");
-    const initials = words.map((word) => word[0].toUpperCase()).join("");
-    return initials;
-  }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && message) {
@@ -90,7 +85,10 @@ const Chat = () => {
             <div className="h-screen">
               <div className="fixed flex items-center p-2 gap-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 w-full z-10 backdrop-blur-sm">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={selectedContact.image} alt="CN" />
+                  <AvatarImage
+                    src={selectedContact.image}
+                    alt={selectedContact.fullname}
+                  />
                   <AvatarFallback>
                     {getInitials(selectedContact.fullname)}
                   </AvatarFallback>

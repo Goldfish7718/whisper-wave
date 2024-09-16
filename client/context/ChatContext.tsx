@@ -15,13 +15,13 @@ export const useChat = (): ChatContextType => {
 };
 
 function ChatProvider({ children }: ChatProviderProps) {
+  const { user } = useExtendedUser();
+  const { user: clerkUser } = useUser();
+
   const [selectedContact, setSelectedContact] =
     useState<SelectedContactType | null>(null);
 
   const [chats, setChats] = useState<ChatType | null>(null);
-
-  const { user } = useExtendedUser();
-  const { user: clerkUser } = useUser();
 
   const handleContactSelect = (contactId: string) => {
     const selectedContact = user?.connections.find(

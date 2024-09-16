@@ -77,12 +77,24 @@ export const getChats = async (req, res) => {
   try {
     const { userId, contactId } = req.params;
 
-    const chats = await Chat.findOne({
+    let chats;
+
+    chats = await Chat.findOne({
       $or: [
         { participant1: userId, participant2: contactId },
         { participant1: contactId, participant2: userId },
       ],
     });
+
+    if (!chats) {
+      chats = {
+        participant1: userId,
+        participant2: contactId,
+        chats: [],
+      };
+
+      return res.status(200).json({ chats });
+    }
 
     res.status(200).json({ chats });
   } catch (error) {
