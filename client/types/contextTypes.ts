@@ -20,6 +20,7 @@ export interface UserContextType {
   // FUNCTIONS
   getUser: () => void;
   requestUpdateConnectionRequest: (decision: string, contactId: string) => void;
+  requestSendContactRequest: (contactId: string) => void;
 
   // OTHER
   loading: boolean;

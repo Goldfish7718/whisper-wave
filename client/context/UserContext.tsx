@@ -7,6 +7,7 @@ import { useContext, createContext, useState, useEffect } from "react";
 import UserProviderProps from "@/types/types";
 import { UserContextType } from "@/types/contextTypes";
 import { useToast } from "@/hooks/use-toast";
+import { AxiosError } from "axios";
 
 const UserContext = createContext<UserContextType | null>(null);
 export const useExtendedUser = (): UserContextType => {
@@ -36,6 +37,27 @@ function UserProvider({ children }: UserProviderProps) {
       console.log(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const requestSendContactRequest = async (contactId: string) => {
+    try {
+      const res = await apiInstance.patch("/users/add", {
+        userId: clerkUser?.id,
+        contactId,
+      });
+
+      toast({
+        title: res.data.message,
+        duration: 3000,
+      });
+    } catch (error: any) {
+      console.log(error);
+      toast({
+        title: error.response.data.message,
+        duration: 3000,
+        variant: "destructive",
+      });
     }
   };
 
@@ -79,6 +101,7 @@ function UserProvider({ children }: UserProviderProps) {
 
     getUser,
     requestUpdateConnectionRequest,
+    requestSendContactRequest,
 
     loading,
     updateLoading,

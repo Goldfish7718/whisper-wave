@@ -22,25 +22,24 @@ import {
   DrawerTrigger,
 } from "./ui/drawer";
 import TriggerProps from "@/types/types";
+import { useExtendedUser } from "@/context/UserContext";
 
 const AddContactTrigger = ({ children }: TriggerProps) => {
   const matches = useMediaQuery("(min-width: 768px)");
 
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [contactIdToRequest, setcontactIdToRequest] = useState("");
 
-  const { toast } = useToast();
+  const { requestSendContactRequest } = useExtendedUser();
 
   const handleSubmit = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setOpen(false);
+    await requestSendContactRequest(contactIdToRequest);
 
-      toast({
-        title: "Request has been sent to your friend",
-      });
-    }, 5000);
+    setOpen(false);
+    setcontactIdToRequest("");
+    setLoading(false);
   };
 
   if (matches)
@@ -53,7 +52,11 @@ const AddContactTrigger = ({ children }: TriggerProps) => {
               <DialogTitle className="text-lg">Add New Contact</DialogTitle>
             </DialogHeader>
             <div className="flex gap-2">
-              <Input placeholder="Enter Contact ID" />
+              <Input
+                placeholder="Enter Contact ID"
+                value={contactIdToRequest}
+                onChange={(e) => setcontactIdToRequest(e.target.value)}
+              />
               <Button disabled={loading} onClick={handleSubmit}>
                 {!loading && (
                   <>
@@ -77,7 +80,11 @@ const AddContactTrigger = ({ children }: TriggerProps) => {
               <DrawerTitle className="text-lg">Add New Contact</DrawerTitle>
             </DrawerHeader>
             <div className="flex gap-2 p-4">
-              <Input placeholder="Enter Contact ID" />
+              <Input
+                placeholder="Enter Contact ID"
+                value={contactIdToRequest}
+                onChange={(e) => setcontactIdToRequest(e.target.value)}
+              />
               <Button disabled={loading} onClick={handleSubmit}>
                 {!loading && (
                   <>
