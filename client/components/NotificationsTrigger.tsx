@@ -1,17 +1,24 @@
+"use client";
+
 import React from "react";
 import { useMediaQuery } from "usehooks-ts";
 import { Popover, PopoverTrigger } from "./ui/popover";
-import TriggerProps from "@/types/types";
+import TriggerProps, { ConnectionRequestCardProps } from "@/types/types";
 import { PopoverContent } from "@radix-ui/react-popover";
 import { ScrollArea } from "./ui/scroll-area";
-import contacts from "@/data/contacts.json";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
-import { ContactCardProps } from "@/types/types";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
+import { useExtendedUser } from "@/context/UserContext";
 
-const ConnectionRequestCard = ({ name, image }: ContactCardProps) => {
+const ConnectionRequestCard = ({
+  name,
+  image,
+  id: contactId,
+}: ConnectionRequestCardProps) => {
+  const { requestUpdateConnectionRequest } = useExtendedUser();
+
   return (
     <Card className="m-2">
       <CardContent className="p-4 flex justify-between">
@@ -25,8 +32,17 @@ const ConnectionRequestCard = ({ name, image }: ContactCardProps) => {
         </div>
 
         <div className="flex gap-2">
-          <Button size="sm">Accept</Button>
-          <Button size="sm" variant="outline">
+          <Button
+            size="sm"
+            onClick={() => requestUpdateConnectionRequest("accept", contactId)}>
+            Accept
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() =>
+              requestUpdateConnectionRequest("decline", contactId)
+            }>
             Decline
           </Button>
         </div>
@@ -37,6 +53,7 @@ const ConnectionRequestCard = ({ name, image }: ContactCardProps) => {
 
 const NotificationsTrigger = ({ children }: TriggerProps) => {
   const matches = useMediaQuery("(min-width: 768px)");
+  const { user } = useExtendedUser();
 
   if (matches)
     return (
@@ -46,9 +63,10 @@ const NotificationsTrigger = ({ children }: TriggerProps) => {
           <div className="p-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 h-full">
             <h3 className="font-bold text-lg">Notifications</h3>
             <ScrollArea className="h-[90%]">
-              {contacts.map((contact) => (
-                <ConnectionRequestCard key={contact.id} {...contact} />
-              ))}
+              {user?.requests &&
+                user?.requests.map((contact) => (
+                  <ConnectionRequestCard key={contact.id} {...contact} />
+                ))}
             </ScrollArea>
           </div>
         </PopoverContent>
@@ -62,9 +80,10 @@ const NotificationsTrigger = ({ children }: TriggerProps) => {
           <div className="p-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 h-full">
             <h3 className="font-bold text-lg">Notifications</h3>
             <ScrollArea className="h-[90%]">
-              {contacts.map((contact) => (
-                <ConnectionRequestCard key={contact.id} {...contact} />
-              ))}
+              {user?.requests &&
+                user?.requests.map((contact) => (
+                  <ConnectionRequestCard key={contact.id} {...contact} />
+                ))}
             </ScrollArea>
           </div>
         </DrawerContent>
