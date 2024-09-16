@@ -85,7 +85,10 @@ const Chat = () => {
             <div className="h-screen">
               <div className="fixed flex items-center p-2 gap-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 w-full z-10 backdrop-blur-sm">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={selectedContact.image} alt="CN" />
+                  <AvatarImage
+                    src={selectedContact.image}
+                    alt={selectedContact.fullname}
+                  />
                   <AvatarFallback>
                     {getInitials(selectedContact.fullname)}
                   </AvatarFallback>

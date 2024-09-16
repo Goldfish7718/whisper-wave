@@ -4,6 +4,7 @@ import { useExtendedUser } from "@/context/UserContext";
 import { Separator } from "./ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useChat } from "@/context/ChatContext";
+import { getInitials } from "@/utils";
 
 const ContactsDrawer = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useExtendedUser();
@@ -23,7 +24,9 @@ const ContactsDrawer = ({ children }: { children: React.ReactNode }) => {
                   <div className="h-20 py-2 px-6 w-full flex items-center gap-4 hover:cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800">
                     <Avatar>
                       <AvatarImage src={contact.image} alt={contact.name} />
-                      <AvatarFallback>CN</AvatarFallback>
+                      <AvatarFallback>
+                        {getInitials(contact.image)}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col w-full">
                       <div className="flex justify-between items-center">

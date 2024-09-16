@@ -11,6 +11,7 @@ import { Button } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { useExtendedUser } from "@/context/UserContext";
 import Loading from "./Loading";
+import { getInitials } from "@/utils";
 
 const ConnectionRequestCard = ({
   name,
@@ -30,8 +31,8 @@ const ConnectionRequestCard = ({
       <CardContent className="p-4 flex justify-between">
         <div className="flex gap-2 items-center">
           <Avatar className="h-10 w-10">
-            <AvatarImage src={image} alt="CN" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={image} alt={name} />
+            <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
 
           <h5>{name}</h5>
