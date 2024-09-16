@@ -88,6 +88,12 @@ export const sendContactRequest = async (req, res) => {
   try {
     const { contactId, userId } = req.body;
 
+    if (contactId == userId) {
+      return res
+        .status(400)
+        .json({ message: "You can't send a connection request to yourself!" });
+    }
+
     const clerkClient = createClerkClient({
       secretKey: `${process.env.CLERK_SECRET_KEY}`,
     });
@@ -110,6 +116,10 @@ export const sendContactRequest = async (req, res) => {
       return res
         .status(409)
         .json({ message: "You have already sent a request to this user." });
+    } else if (existingUser.connections.includes(userId)) {
+      return res
+        .status(409)
+        .json({ message: "You are already connected to this user." });
     }
 
     existingUser.requests.push(userId);
