@@ -74,7 +74,7 @@ const NotificationsTrigger = ({ children }: TriggerProps) => {
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>{children}</PopoverTrigger>
-        <PopoverContent className="h-[50vh] w-[70vh] bg-white rounded-lg m-1">
+        <PopoverContent className="h-[50vh] w-[70vh] rounded-lg m-1">
           <h3 className="font-bold text-lg">Notifications</h3>
           {user?.requests && user.requests.length > 0 ? (
             <ScrollArea className="h-[90%]">
@@ -88,7 +88,9 @@ const NotificationsTrigger = ({ children }: TriggerProps) => {
             </ScrollArea>
           ) : (
             <div className="h-full flex justify-center items-center">
-              <h4 className="text-neutral-300">No Notifications</h4>
+              <h4 className="text-neutral-300 dark:text-neutral-600">
+                No Notifications
+              </h4>
             </div>
           )}
         </PopoverContent>
@@ -99,7 +101,7 @@ const NotificationsTrigger = ({ children }: TriggerProps) => {
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>{children}</DrawerTrigger>
         <DrawerContent className="h-[500px]">
-          <div className="p-2 py-4">
+          <div className="p-2 py-4 h-full">
             <h4 className="font-bold my-2">Notifications</h4>
             {user?.requests && user.requests.length > 0 ? (
               <ScrollArea className="h-[90%]">
@@ -113,7 +115,9 @@ const NotificationsTrigger = ({ children }: TriggerProps) => {
               </ScrollArea>
             ) : (
               <div className="h-full flex justify-center items-center">
-                <h4 className="text-neutral-300">No Notifications</h4>
+                <h4 className="text-neutral-300 dark:text-neutral-600">
+                  No Notifications
+                </h4>
               </div>
             )}
           </div>
