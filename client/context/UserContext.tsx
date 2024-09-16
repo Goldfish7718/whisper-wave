@@ -53,11 +53,12 @@ function UserProvider({ children }: UserProviderProps) {
         }
       );
 
-      getUser();
+      await getUser();
 
       toast({
         title: `Request ${decision == "accept" ? "accepted" : "declined"}`,
         duration: 3000,
+        variant: decision == "accept" ? "default" : "destructive",
       });
     } catch (error) {
       console.log(error);

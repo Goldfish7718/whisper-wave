@@ -104,9 +104,15 @@ export const sendContactRequest = async (req, res) => {
       throw error;
     }
 
-    const existingUser = await User.findOne({ userId });
+    const existingUser = await User.findOne({ userId: contactId });
 
-    existingUser.requests.push(contactId);
+    if (existingUser.requests.includes(userId)) {
+      return res
+        .status(409)
+        .json({ message: "You have already sent a request to this user." });
+    }
+
+    existingUser.requests.push(userId);
     await existingUser.save();
 
     res

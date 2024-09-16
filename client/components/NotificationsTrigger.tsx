@@ -1,23 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
-import { Popover, PopoverTrigger } from "./ui/popover";
+import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 import TriggerProps, { ConnectionRequestCardProps } from "@/types/types";
-import { PopoverContent } from "@radix-ui/react-popover";
 import { ScrollArea } from "./ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { useExtendedUser } from "@/context/UserContext";
+import Loading from "./Loading";
 
 const ConnectionRequestCard = ({
   name,
   image,
   id: contactId,
+  setOpen,
 }: ConnectionRequestCardProps) => {
-  const { requestUpdateConnectionRequest } = useExtendedUser();
+  const { requestUpdateConnectionRequest, updateLoading } = useExtendedUser();
+
+  const handleSubmit = async (decision: string, contactId: string) => {
+    await requestUpdateConnectionRequest(decision, contactId);
+    setOpen(false);
+  };
 
   return (
     <Card className="m-2">
@@ -32,19 +38,26 @@ const ConnectionRequestCard = ({
         </div>
 
         <div className="flex gap-2">
-          <Button
-            size="sm"
-            onClick={() => requestUpdateConnectionRequest("accept", contactId)}>
-            Accept
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() =>
-              requestUpdateConnectionRequest("decline", contactId)
-            }>
-            Decline
-          </Button>
+          {!updateLoading && (
+            <>
+              <Button
+                size="sm"
+                onClick={() => handleSubmit("accept", contactId)}>
+                Accept
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => handleSubmit("decline", contactId)}>
+                Decline
+              </Button>
+            </>
+          )}
+          {updateLoading && (
+            <div className="h-full flex items-center mx-4">
+              <Loading size={24} />
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -55,36 +68,54 @@ const NotificationsTrigger = ({ children }: TriggerProps) => {
   const matches = useMediaQuery("(min-width: 768px)");
   const { user } = useExtendedUser();
 
+  const [open, setOpen] = useState(false);
+
   if (matches)
     return (
-      <Popover>
-        <PopoverTrigger>{children}</PopoverTrigger>
-        <PopoverContent className="h-[50vh] w-[70vh] bg-white border-[1px] border-neutral-300 dark:border-neutral-800 rounded-lg m-1">
-          <div className="p-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 h-full">
-            <h3 className="font-bold text-lg">Notifications</h3>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>{children}</PopoverTrigger>
+        <PopoverContent className="h-[50vh] w-[70vh] bg-white rounded-lg m-1">
+          <h3 className="font-bold text-lg">Notifications</h3>
+          {user?.requests && user.requests.length > 0 ? (
             <ScrollArea className="h-[90%]">
-              {user?.requests &&
-                user?.requests.map((contact) => (
-                  <ConnectionRequestCard key={contact.id} {...contact} />
-                ))}
+              {user?.requests.map((contact) => (
+                <ConnectionRequestCard
+                  key={contact.id}
+                  {...contact}
+                  setOpen={setOpen}
+                />
+              ))}
             </ScrollArea>
-          </div>
+          ) : (
+            <div className="h-full flex justify-center items-center">
+              <h4 className="text-neutral-300">No Notifications</h4>
+            </div>
+          )}
         </PopoverContent>
       </Popover>
     );
   else
     return (
-      <Drawer>
-        <DrawerTrigger>{children}</DrawerTrigger>
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>{children}</DrawerTrigger>
         <DrawerContent className="h-[500px]">
-          <div className="p-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 h-full">
-            <h3 className="font-bold text-lg">Notifications</h3>
-            <ScrollArea className="h-[90%]">
-              {user?.requests &&
-                user?.requests.map((contact) => (
-                  <ConnectionRequestCard key={contact.id} {...contact} />
+          <div className="p-2 py-4">
+            <h4 className="font-bold my-2">Notifications</h4>
+            {user?.requests && user.requests.length > 0 ? (
+              <ScrollArea className="h-[90%]">
+                {user?.requests.map((contact) => (
+                  <ConnectionRequestCard
+                    key={contact.id}
+                    {...contact}
+                    setOpen={setOpen}
+                  />
                 ))}
-            </ScrollArea>
+              </ScrollArea>
+            ) : (
+              <div className="h-full flex justify-center items-center">
+                <h4 className="text-neutral-300">No Notifications</h4>
+              </div>
+            )}
           </div>
         </DrawerContent>
       </Drawer>

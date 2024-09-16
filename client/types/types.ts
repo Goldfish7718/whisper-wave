@@ -27,6 +27,7 @@ export interface ContactCardProps {
 
 export interface ConnectionRequestCardProps extends ContactCardProps {
   id: string;
+  setOpen: (open: boolean) => void;
 }
 
 export interface ChatType {
