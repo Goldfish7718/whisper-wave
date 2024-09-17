@@ -1,6 +1,8 @@
-import { createClerkClient } from "@clerk/backend";
 import User from "../models/userModel.js";
+import transformUsersWithClerk from "../utils/transformUsersWithClerk.js";
+import { clerkClient } from "../index.js";
 
+// GET A USER
 export const getUser = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -15,13 +17,10 @@ export const getUser = async (req, res) => {
   }
 };
 
+// CREATE A USER IF NOT EXISTS
 export const createUser = async (req, res) => {
   try {
     const { userId } = req.body;
-
-    const clerkClient = createClerkClient({
-      secretKey: `${process.env.CLERK_SECRET_KEY}`,
-    });
 
     try {
       await clerkClient.users.getUser(userId);
@@ -36,8 +35,6 @@ export const createUser = async (req, res) => {
     }
 
     let user = await User.findOne({ userId });
-    let connections = [];
-    let requests = [];
 
     if (!user) {
       user = await User.create({
@@ -45,37 +42,7 @@ export const createUser = async (req, res) => {
       });
     }
 
-    if (user.connections.length > 0) {
-      connections = (
-        await clerkClient.users.getUserList({ userId: user.connections })
-      ).data;
-      connections = connections.map((connection) => {
-        return {
-          id: connection.id,
-          image: connection.imageUrl,
-          name: `${connection.firstName} ${connection.lastName}`,
-        };
-      });
-    }
-
-    if (user.requests.length > 0) {
-      requests = (
-        await clerkClient.users.getUserList({ userId: user.requests })
-      ).data;
-      requests = requests.map((request) => {
-        return {
-          id: request.id,
-          image: request.imageUrl,
-          name: `${request.firstName} ${request.lastName}`,
-        };
-      });
-    }
-
-    user = {
-      ...user.toObject(),
-      connections,
-      requests,
-    };
+    user = await transformUsersWithClerk(user);
 
     res.status(200).json({ user });
   } catch (error) {
@@ -84,6 +51,7 @@ export const createUser = async (req, res) => {
   }
 };
 
+// SEND A CONTACT REQUEST
 export const sendContactRequest = async (req, res) => {
   try {
     const { contactId, userId } = req.body;
@@ -93,10 +61,6 @@ export const sendContactRequest = async (req, res) => {
         .status(400)
         .json({ message: "You can't send a connection request to yourself!" });
     }
-
-    const clerkClient = createClerkClient({
-      secretKey: `${process.env.CLERK_SECRET_KEY}`,
-    });
 
     try {
       await clerkClient.users.getUser(contactId);
@@ -134,6 +98,7 @@ export const sendContactRequest = async (req, res) => {
   }
 };
 
+// UPDATE A CONTACT REQUEST
 export const updateContactRequest = async (req, res) => {
   try {
     const { contactId, userId } = req.body;
@@ -157,13 +122,16 @@ export const updateContactRequest = async (req, res) => {
     await existingFirstUser.save();
     await existingSecondUser.save();
 
-    res.status(200).json({ user: existingFirstUser });
+    let user = await transformUsersWithClerk(existingFirstUser);
+
+    res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
+// DELETE A CONTACT
 export const deleteContact = async (req, res) => {
   try {
     const { contactId, userId } = req.body;

@@ -1,6 +1,8 @@
 import { users } from "../index.js";
 import Chat from "../models/chatModel.js";
 
+// A FUNCTION TO STORE EVERY MESSAGE IN THE CONVERSATION AND EMIT EVENTS THROUGH WEBSOCKETS
+// Accessed through Web Sockets.
 export const processPrivateMessage = async (socket, data) => {
   try {
     // EXTRACT REQUIRED DATA
@@ -73,6 +75,7 @@ export const processPrivateMessage = async (socket, data) => {
   }
 };
 
+// API ENDPOINT FUNCTION TO FETCH CHATS BETWEEN TWO USERS
 export const getChats = async (req, res) => {
   try {
     const { userId, contactId } = req.params;

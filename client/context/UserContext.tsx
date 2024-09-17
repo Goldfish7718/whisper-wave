@@ -75,7 +75,7 @@ function UserProvider({ children }: UserProviderProps) {
         }
       );
 
-      await getUser();
+      setUser(res.data.user);
 
       toast({
         title: `Request ${decision == "accept" ? "accepted" : "declined"}`,
