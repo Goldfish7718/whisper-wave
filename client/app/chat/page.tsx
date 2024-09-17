@@ -94,7 +94,7 @@ const Chat = () => {
                   </AvatarFallback>
                 </Avatar>
 
-                <h3 className="text-lg">Tejas Nanoti</h3>
+                <h3 className="text-lg">{selectedContact.fullname}</h3>
               </div>
 
               {/* CONVERSATION */}
