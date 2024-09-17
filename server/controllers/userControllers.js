@@ -1,6 +1,6 @@
 import User from "../models/userModel.js";
 import transformUsersWithClerk from "../utils/transformUsersWithClerk.js";
-import { clerkClient } from "../index.js";
+import { clerkClient, io, users } from "../index.js";
 
 // GET A USER
 export const getUser = async (req, res) => {
@@ -89,6 +89,11 @@ export const sendContactRequest = async (req, res) => {
     existingUser.requests.push(userId);
     await existingUser.save();
 
+    const user = await transformUsersWithClerk(existingUser);
+
+    if (users[contactId])
+      io.to(users[contactId]).emit("newRequest", { user, contactId: userId });
+
     res
       .status(200)
       .json({ message: `Contact request sent to ID: ${contactId}` });
@@ -122,7 +127,15 @@ export const updateContactRequest = async (req, res) => {
     await existingFirstUser.save();
     await existingSecondUser.save();
 
-    let user = await transformUsersWithClerk(existingFirstUser);
+    let user = await transformUsersWithClerk(existingSecondUser);
+
+    if (users[contactId] && decision == "accept")
+      io.to(users[contactId]).emit("requestAccepted", {
+        user,
+        userId,
+      });
+
+    user = await transformUsersWithClerk(existingFirstUser);
 
     res.status(200).json({ user });
   } catch (error) {

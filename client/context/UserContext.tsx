@@ -7,7 +7,6 @@ import { useContext, createContext, useState, useEffect } from "react";
 import UserProviderProps from "@/types/types";
 import { UserContextType } from "@/types/contextTypes";
 import { useToast } from "@/hooks/use-toast";
-import { AxiosError } from "axios";
 
 const UserContext = createContext<UserContextType | null>(null);
 export const useExtendedUser = (): UserContextType => {
@@ -95,6 +94,36 @@ function UserProvider({ children }: UserProviderProps) {
       socket.emit("register", { userId: clerkUser.id });
     }
   }, [clerkUser]);
+
+  useEffect(() => {
+    socket.on(
+      "newRequest",
+      ({ user, contactId }: { user: UserType; contactId: string }) => {
+        toast({
+          title: `${contactId} sent you a connection request!`,
+        });
+
+        setUser(user);
+      }
+    );
+
+    socket.on(
+      "requestAccepted",
+      ({ user, userId }: { user: UserType; userId: string }) => {
+        toast({
+          title: `${userId} accepted your connection request!`,
+        });
+
+        console.log(user);
+        setUser(user);
+      }
+    );
+
+    return () => {
+      socket.off("newRequest");
+      socket.off("requestAccepted");
+    };
+  }, []);
 
   const value: UserContextType = {
     user,
