@@ -49,6 +49,7 @@ function UserProvider({ children }: UserProviderProps) {
       toast({
         title: res.data.message,
         duration: 3000,
+        variant: "success",
       });
     } catch (error: any) {
       console.log(error);
@@ -79,7 +80,7 @@ function UserProvider({ children }: UserProviderProps) {
       toast({
         title: `Request ${decision == "accept" ? "accepted" : "declined"}`,
         duration: 3000,
-        variant: decision == "accept" ? "default" : "destructive",
+        variant: decision == "accept" ? "success" : "destructive",
       });
     } catch (error) {
       console.log(error);
@@ -101,6 +102,7 @@ function UserProvider({ children }: UserProviderProps) {
       ({ user, contactId }: { user: UserType; contactId: string }) => {
         toast({
           title: `${contactId} sent you a connection request!`,
+          duration: 3000,
         });
 
         setUser(user);
@@ -112,6 +114,8 @@ function UserProvider({ children }: UserProviderProps) {
       ({ user, userId }: { user: UserType; userId: string }) => {
         toast({
           title: `${userId} accepted your connection request!`,
+          duration: 3000,
+          variant: "success",
         });
 
         console.log(user);
