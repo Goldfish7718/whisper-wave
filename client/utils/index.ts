@@ -11,3 +11,7 @@ export const truncateString = (message: string) => {
 
   return message;
 };
+
+export const copyToClipboard = (text: string) => {
+  navigator.clipboard.writeText(text);
+};
