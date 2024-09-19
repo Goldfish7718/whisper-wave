@@ -39,6 +39,7 @@ import { ModeToggle } from "./mode-toggle";
 import ContactsDrawer from "./ContactsDrawer";
 import AddContactTrigger from "./AddContactTrigger";
 import NotificationsTrigger from "./NotificationsTrigger";
+import ProfileTrigger from "./ProfileTrigger";
 
 const Navbar = () => {
   const { user } = useUser();
@@ -100,11 +101,11 @@ const Navbar = () => {
                 </Button>
               </NotificationsTrigger>
               <SheetClose asChild>
-                <Button
-                  variant="outline"
-                  onClick={() => router.push("/profile")}>
-                  {user?.fullName} <User size={18} className="mx-2" />
-                </Button>
+                <ProfileTrigger>
+                  <Button variant="outline">
+                    {user?.fullName} <User size={18} className="mx-2" />
+                  </Button>
+                </ProfileTrigger>
               </SheetClose>
               <Button variant="outline">
                 Settings <Settings size={18} className="mx-2" />
@@ -149,30 +150,11 @@ const Navbar = () => {
               Add Contact <UserPlus size={18} className="mx-2" />
             </Button>
           </AddContactTrigger>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                {user?.fullName} <User size={18} className="mx-1" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => router.push("/profile")}>
-                <User className="mr-2 h-4 w-4" />
-                <span>View Profile</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <SignOutButton>
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log Out</span>
-                </DropdownMenuItem>
-              </SignOutButton>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ProfileTrigger>
+            <Button variant="outline">
+              {user?.fullName} <User size={18} className="mx-1" />
+            </Button>
+          </ProfileTrigger>
         </SignedIn>
       </div>
     </nav>
