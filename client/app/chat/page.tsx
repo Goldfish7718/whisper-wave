@@ -19,8 +19,13 @@ const Chat = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const sendButtonRef = useRef<HTMLButtonElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const { selectedContact, handleContactSelect, chats, getChats, sendMessage } =
-    useChat();
+  const {
+    selectedContact,
+    handleContactSelect,
+    chats,
+    sendMessage,
+    chatLoading,
+  } = useChat();
 
   const [message, setMessage] = useState("");
 
@@ -36,12 +41,6 @@ const Chat = () => {
       bottomRef.current.scrollIntoView({ block: "start", behavior: "smooth" });
     }
   }, [chats, selectedContact]);
-
-  useEffect(() => {
-    if (selectedContact) {
-      getChats();
-    }
-  }, [selectedContact]);
 
   return (
     <>
@@ -100,21 +99,30 @@ const Chat = () => {
               {/* CONVERSATION */}
               <ScrollArea className="h-full">
                 <div className="py-12 h-full">
-                  {chats?.chats.map((chatBlock, index) => (
-                    <div
-                      className={`mx-2 ${index == 0 ? "mt-20" : "mt-4"}`}
-                      key={index}>
-                      {chatBlock.messages.map((message, messageIndex) => (
-                        <div
-                          key={messageIndex}
-                          className={`p-3 m-1 bg-neutral-100 dark:bg-neutral-800 max-w-[66.6667%] w-fit rounded-md ${
-                            chatBlock.sender === clerkUser?.id ? "ml-auto" : ""
-                          }`}>
-                          {message}
-                        </div>
-                      ))}
+                  {!chatLoading &&
+                    chats?.chats.map((chatBlock, index) => (
+                      <div
+                        className={`mx-2 ${index == 0 ? "mt-20" : "mt-4"}`}
+                        key={index}>
+                        {chatBlock.messages.map((message, messageIndex) => (
+                          <div
+                            key={messageIndex}
+                            className={`p-3 m-1 bg-neutral-100 dark:bg-neutral-800 max-w-[66.6667%] w-fit rounded-md ${
+                              chatBlock.sender === clerkUser?.id
+                                ? "ml-auto"
+                                : ""
+                            }`}>
+                            {message}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+
+                  {chatLoading && (
+                    <div className="h-screen flex justify-center items-center">
+                      <Loading size={48} />
                     </div>
-                  ))}
+                  )}
 
                   <div ref={bottomRef}></div>
                 </div>

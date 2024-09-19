@@ -11,6 +11,7 @@ export interface ChatContextType {
   sendMessage: (message: string) => void;
 
   // OTHER
+  chatLoading: boolean;
 }
 
 export interface UserContextType {
