@@ -7,7 +7,6 @@ import { useContext, createContext, useState, useEffect } from "react";
 import UserProviderProps from "@/types/types";
 import { UserContextType } from "@/types/contextTypes";
 import { useToast } from "@/hooks/use-toast";
-import { AxiosError } from "axios";
 
 const UserContext = createContext<UserContextType | null>(null);
 export const useExtendedUser = (): UserContextType => {
@@ -50,6 +49,7 @@ function UserProvider({ children }: UserProviderProps) {
       toast({
         title: res.data.message,
         duration: 3000,
+        variant: "success",
       });
     } catch (error: any) {
       console.log(error);
@@ -75,12 +75,12 @@ function UserProvider({ children }: UserProviderProps) {
         }
       );
 
-      await getUser();
+      setUser(res.data.user);
 
       toast({
         title: `Request ${decision == "accept" ? "accepted" : "declined"}`,
         duration: 3000,
-        variant: decision == "accept" ? "default" : "destructive",
+        variant: decision == "accept" ? "success" : "destructive",
       });
     } catch (error) {
       console.log(error);
@@ -95,6 +95,39 @@ function UserProvider({ children }: UserProviderProps) {
       socket.emit("register", { userId: clerkUser.id });
     }
   }, [clerkUser]);
+
+  useEffect(() => {
+    socket.on(
+      "newRequest",
+      ({ user, contactId }: { user: UserType; contactId: string }) => {
+        toast({
+          title: `${contactId} sent you a connection request!`,
+          duration: 3000,
+        });
+
+        setUser(user);
+      }
+    );
+
+    socket.on(
+      "requestAccepted",
+      ({ user, userId }: { user: UserType; userId: string }) => {
+        toast({
+          title: `${userId} accepted your connection request!`,
+          duration: 3000,
+          variant: "success",
+        });
+
+        console.log(user);
+        setUser(user);
+      }
+    );
+
+    return () => {
+      socket.off("newRequest");
+      socket.off("requestAccepted");
+    };
+  }, []);
 
   const value: UserContextType = {
     user,

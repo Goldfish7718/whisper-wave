@@ -12,6 +12,7 @@ config();
 // ROUTE IMPORTS
 import userRoutes from "./routes/userRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import { createClerkClient } from "@clerk/backend";
 
 // CONSTANTS
 const app = express();
@@ -32,7 +33,7 @@ app.use("/chats", chatRoutes);
 
 const server = createServer(app);
 
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: {
     origin: process.env.ORIGIN,
   },
@@ -46,6 +47,9 @@ const connectDB = async (DB_URI) => {
 };
 
 export const users = {};
+export const clerkClient = createClerkClient({
+  secretKey: `${process.env.CLERK_SECRET_KEY}`,
+});
 
 // SOCKET IO CONFIG AND EVENTS
 io.on("connection", (socket) => {

@@ -8,6 +8,7 @@ import { ChatContextType } from "@/types/contextTypes";
 import { apiInstance } from "@/app/globals";
 import { useUser } from "@clerk/nextjs";
 import { socket } from "@/app/globals";
+import { toast } from "@/hooks/use-toast";
 
 const ChatContext = createContext<ChatContextType | null>(null);
 export const useChat = (): ChatContextType => {
@@ -56,9 +57,26 @@ function ChatProvider({ children }: ChatProviderProps) {
   };
 
   useEffect(() => {
-    if (selectedContact) {
+    if (user) {
       socket.on("privateMessage", ({ sender, message }) => {
-        if (sender !== clerkUser?.id && sender !== selectedContact.contactId) {
+        // console.log(sender !== selectedContact?.contactId);
+        if (
+          !selectedContact ||
+          (sender !== clerkUser?.id && sender !== selectedContact?.contactId)
+        ) {
+          // console.log(user?.connections.find(connection => connection.id === sender)?.name);
+          console.log(sender, user?.connections, clerkUser?.id);
+
+          toast({
+            title: user?.connections.find(
+              (connection) => connection.id == sender
+            )?.name,
+            description: message,
+            duration: 5000,
+          });
+        }
+
+        if (sender !== clerkUser?.id && sender !== selectedContact?.contactId) {
           return;
         }
 
@@ -99,7 +117,7 @@ function ChatProvider({ children }: ChatProviderProps) {
     return () => {
       socket.off("privateMessage");
     };
-  }, [selectedContact]);
+  }, [selectedContact, user]);
 
   const value: ChatContextType = {
     // DATA
