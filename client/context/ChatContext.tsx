@@ -23,8 +23,10 @@ function ChatProvider({ children }: ChatProviderProps) {
     useState<SelectedContactType | null>(null);
 
   const [chats, setChats] = useState<ChatType | null>(null);
+  const [chatLoading, setchatLoading] = useState(false);
 
   const handleContactSelect = (contactId: string) => {
+    setChats(null);
     const selectedContact = user?.connections.find(
       (connection) => connection.id == contactId
     );
@@ -38,6 +40,7 @@ function ChatProvider({ children }: ChatProviderProps) {
 
   const getChats = async () => {
     try {
+      setchatLoading(true);
       const res = await apiInstance.get(
         `/chats/get/${clerkUser?.id}/${selectedContact?.contactId}`
       );
@@ -45,6 +48,8 @@ function ChatProvider({ children }: ChatProviderProps) {
       setChats(res.data.chats);
     } catch (error) {
       console.log(error);
+    } finally {
+      setchatLoading(false);
     }
   };
 
@@ -119,6 +124,12 @@ function ChatProvider({ children }: ChatProviderProps) {
     };
   }, [selectedContact, user]);
 
+  useEffect(() => {
+    if (selectedContact) {
+      getChats();
+    }
+  }, [selectedContact]);
+
   const value: ChatContextType = {
     // DATA
     selectedContact,
@@ -130,6 +141,7 @@ function ChatProvider({ children }: ChatProviderProps) {
     sendMessage,
 
     // OTHER
+    chatLoading,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
