@@ -47,6 +47,51 @@ export const chatData1 = {
         $oid: "66dbfd93d0f887248d999037",
       },
     },
+    {
+      sender: "user_2lPsqR9lw6AsYA1rEzftxtBUQAq",
+      messages: ["What you up to?", "Got any plans for the weekend?"],
+      _id: {
+        $oid: "66dbf8cdafd758fc100126f1",
+      },
+    },
+    {
+      sender: "user_2lWg9WrpMIysFTFll20D0q5q9ZN",
+      messages: [
+        "Not much, just chilling.",
+        "Thinking about catching a movie.",
+      ],
+      _id: {
+        $oid: "66dbf8e5afd758fc100126f2",
+      },
+    },
+    {
+      sender: "user_2lPsqR9lw6AsYA1rEzftxtBUQAq",
+      messages: ["Nice! What movie?", "I'm down to join."],
+      _id: {
+        $oid: "66dbf8f8afd758fc100126f3",
+      },
+    },
+    {
+      sender: "user_2lWg9WrpMIysFTFll20D0q5q9ZN",
+      messages: ["Thinking about that new action flick.", "You in?"],
+      _id: {
+        $oid: "66dbf8fbafd758fc100126f4",
+      },
+    },
+    {
+      sender: "user_2lPsqR9lw6AsYA1rEzftxtBUQAq",
+      messages: ["For sure! Let's do it.", "When are you thinking?"],
+      _id: {
+        $oid: "66dbf8fdafd758fc100126f5",
+      },
+    },
+    {
+      sender: "user_2lWg9WrpMIysFTFll20D0q5q9ZN",
+      messages: ["How about Saturday evening?", "We could grab some food too."],
+      _id: {
+        $oid: "66dbf900afd758fc100126f6",
+      },
+    },
   ],
   __v: 30,
 };

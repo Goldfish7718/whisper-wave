@@ -45,30 +45,31 @@ const Chat = () => {
   return (
     <>
       {/* CONTACTS */}
-      <aside className="fixed hidden sm:block sm:w-[300px] md:w-[400px] border-r-[1px] border-neutral-300 dark:border-neutral-800 h-screen">
-        <ScrollArea className="h-full">
-          {!loading &&
-            user?.connections.map((contact) => (
+      <aside className="fixed hidden sm:block sm:w-[300px] md:w-[400px] border-r-[1px] border-neutral-300 dark:border-neutral-800 h-[calc(100dvh-72px)]">
+        {!loading && (
+          <ScrollArea className="h-full">
+            {user?.connections.map((contact) => (
               <div
                 key={contact.id}
                 onClick={() => handleContactSelect(contact.id)}>
                 <ContactCard {...contact} />
               </div>
             ))}
+          </ScrollArea>
+        )}
 
-          {loading && (
-            <div className="w-full h-screen flex justify-center items-center">
-              <Loading size={48} />
-            </div>
-          )}
-        </ScrollArea>
+        {loading && (
+          <div className="w-full h-full flex justify-center items-center">
+            <Loading size={48} />
+          </div>
+        )}
       </aside>
 
       {/* CHAT INTERFACE */}
-      <section className="sm:ml-[300px] md:ml-[400px]">
+      <section className="sm:ml-[300px] md:ml-[400px] h-[calc(100dvh-72px)]">
         {/* NO CONVERSATION SELECTED */}
         {!selectedContact && (
-          <div className="flex justify-center items-center h-screen bg-neutral-100 dark:bg-neutral-900 z-0">
+          <div className="flex justify-center items-center h-full bg-neutral-100 dark:bg-neutral-900">
             <div className="fixed flex flex-col items-center gap-1">
               <AudioWaveform size={28} className="text-neutral-500" />
               <h3 className="text-neutral-500 font-medium text-lg">
@@ -80,54 +81,49 @@ const Chat = () => {
 
         {/* CONVERSATION SELECTED */}
         {selectedContact && (
-          <div>
-            <div className="h-screen">
-              <div className="fixed flex items-center p-2 gap-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 w-full z-10 backdrop-blur-sm">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage
-                    src={selectedContact.image}
-                    alt={selectedContact.fullname}
-                  />
-                  <AvatarFallback>
-                    {getInitials(selectedContact.fullname)}
-                  </AvatarFallback>
-                </Avatar>
+          <div className="h-full">
+            <div className="fixed flex items-center p-2 gap-2 border-b-[1px] border-neutral-300 dark:border-neutral-800 w-full z-10 backdrop-blur-sm">
+              <Avatar className="h-8 w-8">
+                <AvatarImage
+                  src={selectedContact.image}
+                  alt={selectedContact.fullname}
+                />
+                <AvatarFallback>
+                  {getInitials(selectedContact.fullname)}
+                </AvatarFallback>
+              </Avatar>
 
-                <h3 className="text-lg">{selectedContact.fullname}</h3>
-              </div>
+              <h3 className="text-lg">{selectedContact.fullname}</h3>
+            </div>
 
-              {/* CONVERSATION */}
+            {/* CONVERSATION */}
+            {!chatLoading && (
               <ScrollArea className="h-full">
-                <div className="py-12 h-full">
-                  {!chatLoading &&
-                    chats?.chats.map((chatBlock, index) => (
-                      <div
-                        className={`mx-2 ${index == 0 ? "mt-20" : "mt-4"}`}
-                        key={index}>
-                        {chatBlock.messages.map((message, messageIndex) => (
-                          <div
-                            key={messageIndex}
-                            className={`p-3 m-1 bg-neutral-100 dark:bg-neutral-800 max-w-[66.6667%] w-fit rounded-md ${
-                              chatBlock.sender === clerkUser?.id
-                                ? "ml-auto"
-                                : ""
-                            }`}>
-                            {message}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-
-                  {chatLoading && (
-                    <div className="h-screen flex justify-center items-center">
-                      <Loading size={48} />
+                <div className="h-full  mt-14 sm:mb-12 mb-10">
+                  {chats?.chats.map((chatBlock, index) => (
+                    <div className="mx-2" key={index}>
+                      {chatBlock.messages.map((message, messageIndex) => (
+                        <div
+                          key={messageIndex}
+                          className={`p-3 m-1 bg-neutral-100 dark:bg-neutral-800 max-w-[66.6667%] w-fit rounded-md ${
+                            chatBlock.sender === clerkUser?.id ? "ml-auto" : ""
+                          }`}>
+                          {message}
+                        </div>
+                      ))}
                     </div>
-                  )}
+                  ))}
 
                   <div ref={bottomRef}></div>
                 </div>
               </ScrollArea>
-            </div>
+            )}
+
+            {chatLoading && (
+              <div className="h-full flex justify-center items-center">
+                <Loading size={48} />
+              </div>
+            )}
 
             <div className="flex bottom-0 fixed w-full sm:w-[calc(100%-300px)] md:w-[calc(100%-400px)]">
               <Input
