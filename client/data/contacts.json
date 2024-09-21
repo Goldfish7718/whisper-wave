@@ -68,5 +68,75 @@
         "lastMessage": "Thanks for your help! Your support made a huge difference, and I’m really grateful for it.",
         "time": "10:00",
         "image": "https://img.freepik.com/free-photo/man-having-video-call-with-his-family_23-2149120895.jpg?size=626&ext=jpg&ga=GA1.1.735520172.1710374400&semt=ais"
+    },
+    {
+        "id": 11,
+        "name": "Olivia Miller",
+        "lastMessage": "I’ve sent the files over. Let me know if you need anything else!",
+        "time": "15:05",
+        "image": "https://img.freepik.com/free-photo/smiling-woman-taking-selfie_23-2149120833.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 12,
+        "name": "William Taylor",
+        "lastMessage": "Let’s finalize the details on our call tomorrow.",
+        "time": "13:45",
+        "image": "https://img.freepik.com/free-photo/handsome-man-posing-outside_23-2149120920.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 13,
+        "name": "Sophia White",
+        "lastMessage": "I’m heading out now, should be there in 30 minutes.",
+        "time": "16:10",
+        "image": "https://img.freepik.com/free-photo/happy-young-woman-holding-coffee-cup_23-2149120857.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 14,
+        "name": "Benjamin Moore",
+        "lastMessage": "Can we reschedule our meeting to next week?",
+        "time": "11:55",
+        "image": "https://img.freepik.com/free-photo/young-man-having-coffee-cafe_23-2149120900.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 15,
+        "name": "Charlotte Clark",
+        "lastMessage": "I’m really looking forward to the event. See you soon!",
+        "time": "12:40",
+        "image": "https://img.freepik.com/free-photo/beautiful-woman-smiling-city_23-2149120888.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 16,
+        "name": "Lucas Lewis",
+        "lastMessage": "The package should arrive by tomorrow afternoon.",
+        "time": "09:25",
+        "image": "https://img.freepik.com/free-photo/portrait-young-smiling-man_23-2149120946.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 17,
+        "name": "Amelia Martinez",
+        "lastMessage": "Just finished the project. Sending it over now.",
+        "time": "17:15",
+        "image": "https://img.freepik.com/free-photo/smiling-woman-looking-at-camera_23-2149120829.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 18,
+        "name": "Henry Anderson",
+        "lastMessage": "Thanks for the help. I’ll get back to you once I’ve reviewed everything.",
+        "time": "18:45",
+        "image": "https://img.freepik.com/free-photo/young-man-working-laptop_23-2149120910.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 19,
+        "name": "Ella Thomas",
+        "lastMessage": "Let’s catch up next week!",
+        "time": "20:00",
+        "image": "https://img.freepik.com/free-photo/cheerful-woman-smiling_23-2149120877.jpg?size=626&ext=jpg"
+    },
+    {
+        "id": 20,
+        "name": "Daniel Walker",
+        "lastMessage": "I’ve booked the tickets for the show. See you there!",
+        "time": "21:30",
+        "image": "https://img.freepik.com/free-photo/young-man-casual-wear-sitting-outdoor_23-2149120934.jpg?size=626&ext=jpg"
     }
 ]
