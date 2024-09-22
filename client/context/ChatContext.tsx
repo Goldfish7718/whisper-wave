@@ -9,6 +9,7 @@ import { apiInstance } from "@/app/globals";
 import { useUser } from "@clerk/nextjs";
 import { socket } from "@/app/globals";
 import { toast } from "@/hooks/use-toast";
+import { usePathname, useRouter } from "next/navigation";
 
 const ChatContext = createContext<ChatContextType | null>(null);
 export const useChat = (): ChatContextType => {
@@ -25,8 +26,16 @@ function ChatProvider({ children }: ChatProviderProps) {
   const [chats, setChats] = useState<ChatType | null>(null);
   const [chatLoading, setchatLoading] = useState(false);
 
+  const pathname = usePathname();
+  const router = useRouter();
+
   const handleContactSelect = (contactId: string) => {
     setChats(null);
+
+    if (pathname !== "/chat") {
+      router.push("/chat");
+    }
+
     const selectedContact = user?.connections.find(
       (connection) => connection.id == contactId
     );
