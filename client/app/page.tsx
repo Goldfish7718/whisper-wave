@@ -1,7 +1,15 @@
+"use client";
+
 import ShinyButton from "@/components/magicui/shiny-button";
 import WordRotate from "@/components/magicui/word-rotate";
+import { SignedIn } from "@clerk/clerk-react";
+import { SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <>
       <section className="sm:h-[calc(100dvh-72px)] h-[calc(100dvh-64px)] flex flex-col justify-center  gap-8 sm:mx-40">
@@ -27,8 +35,23 @@ export default function Home() {
         </div>
 
         <div className="flex gap-4 w-full justify-center sm:justify-normal">
-          <ShinyButton className="md:w-1/6 w-1/3">Sign Up</ShinyButton>
-          <ShinyButton className="md:w-1/6 w-1/3">Log In</ShinyButton>
+          <SignedOut>
+            <SignUpButton>
+              <ShinyButton className="md:w-1/6 w-1/3">Sign Up</ShinyButton>
+            </SignUpButton>
+            <SignInButton>
+              <ShinyButton className="md:w-1/6 w-1/3">Log In</ShinyButton>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <div onClick={() => router.push("/chat")}>
+              <ShinyButton>
+                <span className="flex">
+                  Go to Chats <ArrowRight className="mx-2" size={18} />
+                </span>
+              </ShinyButton>
+            </div>
+          </SignedIn>
         </div>
       </section>
     </>
