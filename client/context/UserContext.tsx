@@ -7,7 +7,6 @@ import { useContext, createContext, useState, useEffect } from "react";
 import UserProviderProps from "@/types/types";
 import { UserContextType } from "@/types/contextTypes";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 
 const UserContext = createContext<UserContextType | null>(null);
 export const useExtendedUser = (): UserContextType => {
@@ -20,9 +19,8 @@ function UserProvider({ children }: UserProviderProps) {
   const [loading, setLoading] = useState(false);
   const [updateLoading, setupdateLoading] = useState(false);
 
-  const { user: clerkUser, isSignedIn } = useUser();
+  const { user: clerkUser } = useUser();
   const { toast } = useToast();
-  const router = useRouter();
 
   const getUser = async () => {
     try {

@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTrigger,
@@ -13,7 +12,6 @@ import { Input } from "./ui/input";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Button } from "./ui/button";
 import { Loader2, Plus } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import {
   Drawer,
   DrawerContent,

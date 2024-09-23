@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/Navbar";
@@ -8,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import UserProvider from "@/context/UserContext";
 import ChatProvider from "@/context/ChatContext";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

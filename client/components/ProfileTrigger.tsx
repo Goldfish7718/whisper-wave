@@ -5,9 +5,7 @@ import React, { useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
 import {
   Dialog,
-  DialogHeader,
   DialogContent,
-  DialogTitle,
   DialogTrigger,
   DialogFooter,
 } from "./ui/dialog";
@@ -17,7 +15,6 @@ import { AvatarFallback } from "@radix-ui/react-avatar";
 import { copyToClipboard, getInitials } from "@/utils";
 import { Button } from "./ui/button";
 import { Clipboard, LogOut } from "lucide-react";
-import CustomTooltip from "./CustomTooltip";
 import { useToast } from "@/hooks/use-toast";
 import {
   Drawer,
