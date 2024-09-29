@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import transformUsersWithClerk from "../utils/transformUsersWithClerk.js";
 import { clerkClient, io, users } from "../index.js";
+import Chat from "../models/chatModel.js";
 
 // GET A USER
 export const getUser = async (req, res) => {
@@ -43,6 +44,32 @@ export const createUser = async (req, res) => {
     }
 
     user = await transformUsersWithClerk(user);
+
+    const connections = await Promise.all(
+      user.connections.map(async (connection) => {
+        const chat = await Chat.findOne({
+          $or: [
+            { participant1: user.userId, participant2: connection.id },
+            { participant1: connection.id, participant2: user.userId },
+          ],
+        });
+
+        if (!chat)
+          return {
+            ...connection,
+          };
+
+        const lastChatBlock = chat.chats[chat.chats.length - 1];
+
+        return {
+          ...connection,
+          lastMessage:
+            lastChatBlock.messages[lastChatBlock.messages.length - 1],
+        };
+      })
+    );
+
+    user.connections = connections;
 
     res.status(200).json({ user });
   } catch (error) {

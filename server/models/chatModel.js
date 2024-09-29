@@ -1,15 +1,23 @@
 import { model, Schema } from "mongoose";
 
 const chatSchema = new Schema({
-    participant1: String,
-    participant2: String,
-    chats: [
+  participant1: String,
+  participant2: String,
+  chats: [
+    {
+      sender: String,
+      messages: [
         {
-            sender: String,
-            messages: [String]
-        }
-    ]
-})
+          messageText: String,
+          time: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
+    },
+  ],
+});
 
-const Chat = model('Chat', chatSchema)
-export default Chat
+const Chat = model("Chat", chatSchema);
+export default Chat;

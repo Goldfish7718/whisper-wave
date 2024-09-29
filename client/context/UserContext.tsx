@@ -116,7 +116,6 @@ function UserProvider({ children }: UserProviderProps) {
           variant: "success",
         });
 
-        console.log(user);
         setUser(user);
       }
     );
