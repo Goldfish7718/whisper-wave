@@ -24,7 +24,7 @@ const ContactCard = (contact: ContactCardProps) => {
           </div>
           {contact.lastMessage && (
             <p className="text-neutral-600 dark:text-neutral-300">
-              {truncateString(contact.lastMessage.messageText)}
+              {truncateString(contact.lastMessage.messageText, 30)}
             </p>
           )}
         </div>

@@ -9,6 +9,7 @@ import { apiInstance } from "@/app/globals";
 import { useUser } from "@clerk/nextjs";
 import { socket } from "@/app/globals";
 import { toast } from "@/hooks/use-toast";
+import { truncateString } from "@/utils";
 
 const ChatContext = createContext<ChatContextType | null>(null);
 export const useChat = (): ChatContextType => {
@@ -72,7 +73,7 @@ function ChatProvider({ children }: ChatProviderProps) {
             title: user?.connections.find(
               (connection) => connection.id == sender
             )?.name,
-            description: newMessageObj.messageText,
+            description: truncateString(newMessageObj.messageText, 100),
             duration: 5000,
           });
         }

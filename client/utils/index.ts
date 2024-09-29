@@ -4,12 +4,8 @@ export function getInitials(fullName: string) {
   return initials;
 }
 
-export const truncateString = (message: string) => {
-  if (message.length > 50) {
-    return `${message.substring(0, 20)}...`;
-  }
-
-  return message;
+export const truncateString = (message: string, limit: number) => {
+  return `${message.substring(0, limit)}...`;
 };
 
 export const copyToClipboard = (text: string) => {
