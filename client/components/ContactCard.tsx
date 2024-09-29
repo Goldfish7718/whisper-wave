@@ -16,7 +16,7 @@ const ContactCard = (contact: ContactCardProps) => {
             <h4 className="text-neutral-800 dark:text-neutral-50">
               {contact.name}
             </h4>
-            {contact.lastMessage.time && (
+            {contact.lastMessage && (
               <span className="text-sm text-neutral-400">
                 {convertTime(contact.lastMessage.time)}
               </span>

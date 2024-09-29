@@ -25,7 +25,7 @@ export interface SelectedContactType {
 export interface ContactCardProps {
   image: string;
   name: string;
-  lastMessage: {
+  lastMessage?: {
     messageText: string;
     time: Date;
   };
