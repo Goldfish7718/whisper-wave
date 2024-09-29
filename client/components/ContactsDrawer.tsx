@@ -2,9 +2,7 @@ import { Drawer, DrawerClose, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { ScrollArea } from "./ui/scroll-area";
 import { useExtendedUser } from "@/context/UserContext";
 import { Separator } from "./ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useChat } from "@/context/ChatContext";
-import { getInitials } from "@/utils";
 import ContactCard from "./ContactCard";
 
 const ContactsDrawer = ({ children }: { children: React.ReactNode }) => {

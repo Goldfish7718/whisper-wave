@@ -27,13 +27,6 @@ import {
   SignInButton,
   SignUpButton,
 } from "@clerk/clerk-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "./mode-toggle";
 import ContactsDrawer from "./ContactsDrawer";
