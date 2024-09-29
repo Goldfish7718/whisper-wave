@@ -108,7 +108,7 @@ const Chat = () => {
                           className={`p-3 m-1 bg-neutral-100 dark:bg-neutral-800 max-w-[66.6667%] w-fit rounded-md ${
                             chatBlock.sender === clerkUser?.id ? "ml-auto" : ""
                           }`}>
-                          {message}
+                          {message.messageText}
                         </div>
                       ))}
                     </div>

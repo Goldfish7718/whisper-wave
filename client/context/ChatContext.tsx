@@ -63,20 +63,16 @@ function ChatProvider({ children }: ChatProviderProps) {
 
   useEffect(() => {
     if (user) {
-      socket.on("privateMessage", ({ sender, message }) => {
-        // console.log(sender !== selectedContact?.contactId);
+      socket.on("privateMessage", ({ sender, newMessageObj }) => {
         if (
           !selectedContact ||
           (sender !== clerkUser?.id && sender !== selectedContact?.contactId)
         ) {
-          // console.log(user?.connections.find(connection => connection.id === sender)?.name);
-          console.log(sender, user?.connections, clerkUser?.id);
-
           toast({
             title: user?.connections.find(
               (connection) => connection.id == sender
             )?.name,
-            description: message,
+            description: newMessageObj.messageText,
             duration: 5000,
           });
         }
@@ -94,7 +90,7 @@ function ChatProvider({ children }: ChatProviderProps) {
             const updatedChats = [...prevChats.chats];
             updatedChats[updatedChats.length - 1] = {
               ...lastChatBlock,
-              messages: [...lastChatBlock.messages, message],
+              messages: [...lastChatBlock.messages, newMessageObj],
             };
 
             // Return the updated chat list
@@ -106,7 +102,7 @@ function ChatProvider({ children }: ChatProviderProps) {
             // If the sender is different, create a new chat block
             const newChatBlock = {
               sender,
-              messages: [message],
+              messages: [newMessageObj],
             };
 
             // Return the updated chat list with the new block

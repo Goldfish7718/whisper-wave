@@ -9,6 +9,10 @@ export interface UserType {
     id: string;
     image: string;
     name: string;
+    lastMessage: {
+      messageText: string;
+      time: Date;
+    };
   }[];
 }
 
@@ -21,8 +25,10 @@ export interface SelectedContactType {
 export interface ContactCardProps {
   image: string;
   name: string;
-  lastMessage?: string;
-  time?: string;
+  lastMessage: {
+    messageText: string;
+    time: Date;
+  };
 }
 
 export interface ConnectionRequestCardProps extends ContactCardProps {
@@ -35,7 +41,10 @@ export interface ChatType {
   participant2: string;
   chats: {
     sender: string;
-    messages: string[];
+    messages: {
+      messageText: string;
+      time: string;
+    }[];
   }[];
 }
 

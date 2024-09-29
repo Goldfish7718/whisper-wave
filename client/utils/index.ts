@@ -15,3 +15,10 @@ export const truncateString = (message: string) => {
 export const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
 };
+
+export const convertTime = (time: Date) => {
+  return new Date(time).toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};

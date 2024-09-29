@@ -24,7 +24,11 @@ export const processPrivateMessage = async (socket, data) => {
         if (existingChat.chats.length == 0) {
           const newChatBlock = {
             sender,
-            messages: [message],
+            messages: [
+              {
+                messageText: message,
+              },
+            ],
           };
 
           existingChat.chats.push(newChatBlock);
@@ -35,10 +39,19 @@ export const processPrivateMessage = async (socket, data) => {
 
           // CASE WHEN SENDER IS THE SAME, ONLY PUSH TO EXISTING CHAT BLOCK
           if (existingChatBlock.sender === sender) {
-            existingChatBlock.messages.push(message);
+            existingChatBlock.messages.push({
+              messageText: message,
+            });
           } else {
             // CASE WHEN SENDER IS DIFFERENT, CREATE NEW CHATBLOCK
-            existingChat.chats.push({ sender, messages: [message] });
+            existingChat.chats.push({
+              sender,
+              messages: [
+                {
+                  messageText: message,
+                },
+              ],
+            });
           }
         }
 
@@ -51,21 +64,29 @@ export const processPrivateMessage = async (socket, data) => {
           chats: [
             {
               sender,
-              messages: [message],
+              messages: [
+                {
+                  messageText: message,
+                },
+              ],
             },
           ],
         });
       }
 
-      // EMIT EVENT TO CLIENT
+      let newMessageObj = {
+        messageText: message,
+        time: Date.now(),
+      };
 
+      // EMIT EVENT TO CLIENT
       if (recipientSocketId) {
         socket
           .to(recipientSocketId)
-          .emit("privateMessage", { sender, message });
+          .emit("privateMessage", { sender, newMessageObj });
       }
 
-      socket.emit("privateMessage", { sender, message });
+      socket.emit("privateMessage", { sender, newMessageObj });
       console.log(`Message from ${sender} to ${recipient}: ${message}`);
     } else {
       console.log(`User ${recipient} not found`);

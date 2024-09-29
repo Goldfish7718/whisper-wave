@@ -5,6 +5,7 @@ import { Separator } from "./ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useChat } from "@/context/ChatContext";
 import { getInitials } from "@/utils";
+import ContactCard from "./ContactCard";
 
 const ContactsDrawer = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useExtendedUser();
@@ -21,7 +22,7 @@ const ContactsDrawer = ({ children }: { children: React.ReactNode }) => {
               onClick={() => handleContactSelect(contact.id)}>
               <>
                 <DrawerClose asChild>
-                  <div className="h-20 py-2 px-6 w-full flex items-center gap-4 hover:cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800">
+                  {/* <div className="h-20 py-2 px-6 w-full flex items-center gap-4 hover:cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800">
                     <Avatar>
                       <AvatarImage src={contact.image} alt={contact.name} />
                       <AvatarFallback>
@@ -33,19 +34,21 @@ const ContactsDrawer = ({ children }: { children: React.ReactNode }) => {
                         <h4 className="text-neutral-800 dark:text-neutral-50">
                           {contact.name}
                         </h4>
-                        {/* {contact.time && (
+                        {contact.time && (
                           <span className="text-sm text-neutral-400">
                             {contact.time}
                           </span>
-                        )} */}
+                        )}
                       </div>
-                      {/* {contact.lastMessage && (
+                      {contact.lastMessage && (
                         <p className="text-neutral-600 dark:text-neutral-300">
                           {truncateString(contact.lastMessage)}
                         </p>
-                      )} */}
+                      )}
                     </div>
-                  </div>
+                  </div> */}
+
+                  <ContactCard {...contact} />
                 </DrawerClose>
                 <Separator />
               </>
