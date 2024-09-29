@@ -1,7 +1,7 @@
 import { ContactCardProps } from "@/types/types";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
-import { getInitials, truncateString } from "@/utils";
+import { convertTime, getInitials, truncateString } from "@/utils";
 
 const ContactCard = (contact: ContactCardProps) => {
   return (
@@ -16,13 +16,15 @@ const ContactCard = (contact: ContactCardProps) => {
             <h4 className="text-neutral-800 dark:text-neutral-50">
               {contact.name}
             </h4>
-            {contact.time && (
-              <span className="text-sm text-neutral-400">{contact.time}</span>
+            {contact.lastMessage && (
+              <span className="text-sm text-neutral-400">
+                {convertTime(contact.lastMessage.time)}
+              </span>
             )}
           </div>
           {contact.lastMessage && (
             <p className="text-neutral-600 dark:text-neutral-300">
-              {truncateString(contact.lastMessage)}
+              {truncateString(contact.lastMessage.messageText, 30)}
             </p>
           )}
         </div>
