@@ -11,7 +11,7 @@ import { useUser } from "@clerk/nextjs";
 import Loading from "@/components/Loading";
 import { useExtendedUser } from "@/context/UserContext";
 import { useChat } from "@/context/ChatContext";
-import { getInitials } from "@/utils";
+import { convertTime, getInitials } from "@/utils";
 
 const Chat = () => {
   const { user: clerkUser } = useUser();
@@ -109,6 +109,9 @@ const Chat = () => {
                             chatBlock.sender === clerkUser?.id ? "ml-auto" : ""
                           }`}>
                           {message.messageText}
+                          <span className="text-[12px] text-neutral-400 mx-2 mt-2">
+                            {convertTime(message.time)}
+                          </span>
                         </div>
                       ))}
                     </div>

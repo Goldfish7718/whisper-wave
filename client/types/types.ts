@@ -43,7 +43,7 @@ export interface ChatType {
     sender: string;
     messages: {
       messageText: string;
-      time: string;
+      time: Date;
     }[];
   }[];
 }
